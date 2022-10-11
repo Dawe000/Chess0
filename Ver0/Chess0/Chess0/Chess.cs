@@ -6,7 +6,6 @@ namespace Chess0
 {
     public class Chess
     {
-        {
         string[,] board;
         string[] players;
         int[] points;
