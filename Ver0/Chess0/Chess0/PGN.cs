@@ -14,8 +14,10 @@ namespace Chess0
         private string Black { get; set; }
         private string Result { get; set; }
 
-        public PGN(string White, string Black, string Event = "Chess0 Game", string Site = "Chess0", DateTime Date = DateTime.Now, )
+        public PGN(string iWhite, string iBlack, string iEvent = "Chess0 Game", string iSite = "Chess0", DateTime iDate = default, int iRound = 1, string iResult = "*")
         {
+            Event = iEvent;
+            Site = iSite;
 
         }
     }
