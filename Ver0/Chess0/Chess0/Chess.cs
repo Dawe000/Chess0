@@ -12,6 +12,8 @@ namespace Chess0
         int[] time;
         int increment;
         int turn;
+        int[] enPassant;
+        bool check;
 
         public Chess(string[] iPlayers, int iTime, int iIncrement)
         {
@@ -29,15 +31,20 @@ namespace Chess0
             time = new int[] { iTime, iTime };
             increment = iIncrement;
             turn = 0;
+            enPassant = new int[]{8,8};
         }
 
         public Chess(PGN iPGN){
             
         }
 
-        public string[] CheckLegalMoves(int[] pos) //returns all legal moves for a piece
+        public string[] CheckPossibleMoves(int[] pos) //returns all legal moves for a piece
         {
             char type = board[pos[0], pos[1]][1];
+            List<string> possibleMoves = new List<string>{};
+            
+
+            return possibleMoves.ToArray();
         }
 
     }
