@@ -31,6 +31,10 @@ namespace Chess0
             turn = 0;
         }
 
+        public Chess(PGN iPGN){
+            
+        }
+
         public string[] CheckLegalMoves(int[] pos) //returns all legal moves for a piece
         {
             char type = board[pos[0], pos[1]][1];
