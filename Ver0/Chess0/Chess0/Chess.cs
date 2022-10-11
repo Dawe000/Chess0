@@ -16,14 +16,14 @@ namespace Chess0
         public Chess(string[] iPlayers, int iTime, int iIncrement)
         {
             board = new string[,]{
-                    { "0R","0N","0B","0K","0Q","0B","0N","0R" },
+                    { "0R","0N","0B","0Q","0K","0B","0N","0R" },
                     { "0P","0P","0P","0P","0P","0P","0P","0P" },
                     { "","","","","","","","" },
                     { "","","","","","","","" },
                     { "","","","","","","","" },
                     { "","","","","","","","" },
                     { "1P","1P","1P","1P","1P","1P","1P","1P" },
-                    { "1R","1N","1B","1K","1Q","1B","1N","1R" }};
+                    { "1R","1N","1B","1Q","1K","1B","1N","1R" }};
             players = iPlayers;
             points = new int[] { 0, 0 };
             time = new int[] { iTime, iTime };
