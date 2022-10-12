@@ -38,11 +38,31 @@ namespace Chess0
             
         }
 
-        public string[] CheckPossibleMoves(int[] pos) //returns all legal moves for a piece
+        public int[][,] CheckPossibleMoves(int[] pos) //returns all legal moves for a piece
         {
             char type = board[pos[0], pos[1]][1];
-            List<string> possibleMoves = new List<string>{};
+            List<int[,]> possibleMoves = new List<int[,]>{};
             
+            switch (type){
+                case 'P':
+
+                    break;
+                case 'N':
+
+                    break;
+                case 'K':
+
+                    break;
+                case 'B':
+
+                    break;
+                case 'R':
+
+                    break;
+                default:
+
+                    break;
+            }
 
             return possibleMoves.ToArray();
         }
