@@ -17,7 +17,7 @@ namespace Chess0
 
         public Chess(string[] iPlayers, int iTime, int iIncrement)
         {
-            board = new string[,]{
+            board = new string[,]{ //0 is white, 1 is black
                     { "0R","0N","0B","0Q","0K","0B","0N","0R" },
                     { "0P","0P","0P","0P","0P","0P","0P","0P" },
                     { "","","","","","","","" },
@@ -31,7 +31,7 @@ namespace Chess0
             time = new int[] { iTime, iTime };
             increment = iIncrement;
             turn = 0;
-            enPassant = new int[]{8,8};
+            enPassant = new int[] {8,8};
         }
 
         public Chess(PGN iPGN){
@@ -45,7 +45,14 @@ namespace Chess0
             
             switch (type){
                 case 'P':
-
+                    if (turn == 0){
+                        if (board[pos[0]+1,pos[1]]=="") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]},{8,8} }); //move forward
+                        if (board[pos[0]+1,pos[1]-1]!=""&&pos[1]-1!=-1) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
+                        if (board[pos[0]+1,pos[1]+1]!=""&&pos[1]-1!=8) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
+                        if (board[pos[0]+1,pos[1]]=="" && board[pos[0]+2,pos[1]]=="" && pos[0]==0) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{8,8} }); //move 2 forward
+                        if (board[pos[0]+1,pos[1]-1]!="")
+                        
+                    }
                     break;
                 case 'N':
 
