@@ -6,7 +6,7 @@ namespace Chess0
     {
         static void Main(string[] args)
         {
-
+            //random changes
         }
     }
 
