@@ -49,11 +49,19 @@ namespace Chess0
                 case 'P': //pawn movement
                     if (turn == 0){//white
                         if (board[pos[0]+1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]},{8,8} }); //move forward
-                        if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
-                        if (pos[1] - 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
+                        if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]-1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
+                        if (pos[1] - 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]+1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
                         if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{8,8} }); //move 2 forward
                         if (enPassant[0] < 8) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
                         if (enPassant[0] < 8)  if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
+                    }
+                    else{
+                        if (board[pos[0]-1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]},{8,8} }); //move forward
+                        if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]-1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{pos[0]-1,pos[1]-1}}); //attack to the left
+                        if (pos[1] - 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]+1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{pos[0]-1,pos[1]+1}}); //attack to the right
+                        if (board[pos[0]-1,pos[1]]=="  " && board[pos[0]-2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]},{8,8} }); //move 2 forward
+                        if (enPassant[0] < 8) if (board[pos[0]-1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
+                        if (enPassant[0] < 8)  if (board[pos[0]-1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
                     break;
                 case 'N': //knight movement
@@ -110,7 +118,7 @@ namespace Chess0
                     for (int y = -1; y<2; y++) if (pos[0] + y > -1 && pos[0] + y < 8){//basic king moves in every direction
                         for (int x = -1; x<2; x++) if (pos[1] + x > -1 && pos[1] + x < 8 && !(x==0 && y==0)){
                             if (board[pos[0]+y,pos[1]+x]=="  ") possibleMoves.Add(new int[,] {{pos[0]+y,pos[1]+x},{8,8} });
-                            else if (Convert.ToInt16(Convert.ToString(board[pos[0]+y,pos[1]+x][0]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+y,pos[1]+x},{pos[0]+y,pos[1]+x }});
+                            else if (Convert.ToInt16(Convert.ToString(board[pos[0]+y,pos[1]+x][0]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+y,pos[1]+x},{pos[0]+y,pos[1]+x}});
                         }
                     }
                     break;
