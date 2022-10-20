@@ -14,6 +14,7 @@ namespace Chess0
         int turn;
         int[] enPassant;
         bool check;
+        bool[,] castle;
 
         public Chess(string[] iPlayers, int iTime, int iIncrement)
         {
@@ -27,11 +28,12 @@ namespace Chess0
                     { "1P","1P","1P","1P","1P","1P","1P","1P" },
                     { "1R","1N","1B","1Q","1K","1B","1N","1R" }};
             players = iPlayers;
-            points = new int[] { 0, 0 };
-            time = new int[] { iTime, iTime };
-            increment = iIncrement;
-            turn = 0;
-            enPassant = new int[] {8,8};
+            points = new int[] { 0, 0 }; 
+            time = new int[] { iTime, iTime }; //time total
+            increment = iIncrement; //time increment after move
+            turn = 0; //0 is white, 1 is black
+            enPassant = new int[] {8,8}; //position of en-passantable pawn
+            castle = new bool[,] {{true,true},{true,true}}; //queenside, kingside
         }
 
         public Chess(PGN iPGN){
@@ -105,7 +107,9 @@ namespace Chess0
                         }
                     break;
                 case 'K':
-
+                    if (pos[0]-1>-1){
+                        if (pos[])
+                    }
                     break;
                 case 'B':
 
