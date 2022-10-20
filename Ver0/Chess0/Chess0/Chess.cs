@@ -55,7 +55,7 @@ namespace Chess0
                         if (enPassant[0] < 8) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
                         if (enPassant[0] < 8)  if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
-                    else{
+                    else{//black
                         if (board[pos[0]-1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]},{8,8} }); //move forward
                         if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]-1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{pos[0]-1,pos[1]-1}}); //attack to the left
                         if (pos[1] - 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]+1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{pos[0]-1,pos[1]+1}}); //attack to the right
@@ -121,6 +121,7 @@ namespace Chess0
                             else if (Convert.ToInt16(Convert.ToString(board[pos[0]+y,pos[1]+x][0]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+y,pos[1]+x},{pos[0]+y,pos[1]+x}});
                         }
                     }
+                    if (castle[turn,0]) {}
                     break;
                 case 'B':
 
