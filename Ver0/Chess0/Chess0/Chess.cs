@@ -40,7 +40,7 @@ namespace Chess0
             
         }
 
-        public int[][,] CheckPossibleMoves(int[] pos) //returns all legal moves for a piece
+        public int[][,] CheckPossibleMoves(int[] pos,bool c = true) //returns all legal moves for a piece
         {
             char type = board[pos[0], pos[1]][1];
             List<int[,]> possibleMoves = new List<int[,]>{};
@@ -48,10 +48,10 @@ namespace Chess0
             switch (type){
                 case 'P': //pawn movement
                     if (turn == 0){//white
-                        if (board[pos[0]+1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]},{8,8} }); //move forward
+                        if (c) if (board[pos[0]+1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]},{8,8} }); //move forward
                         if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]-1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
                         if (pos[1] - 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]+1]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
-                        if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{8,8} }); //move 2 forward
+                        if (c) if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{8,8} }); //move 2 forward
                         if (enPassant[0] < 8) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
                         if (enPassant[0] < 8)  if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
@@ -121,7 +121,9 @@ namespace Chess0
                             else if (Convert.ToInt16(Convert.ToString(board[pos[0]+y,pos[1]+x][0]))!=turn) possibleMoves.Add(new int[,] {{pos[0]+y,pos[1]+x},{pos[0]+y,pos[1]+x}});
                         }
                     }
-                    if (castle[turn,0]) {}
+                    if (c){
+                        if (castle[turn,0]) {}
+                    }
                     break;
                 case 'B':
 
@@ -135,6 +137,18 @@ namespace Chess0
             }
 
             return possibleMoves.ToArray();
+        }
+
+        public bool checkIfAttacked(int[] pos, int a){
+            List<int[,]> attackPos = new List<int[,]>{};
+            char attacker = Convert.ToChar(Convert.ToString(a));
+            for (int y=0; y<8;y++){
+                for (int x=0; x<8; x++){
+                    if (board[y,x][0]==attacker) attackPos.AddRange(CheckPossibleMoves(new int[]{y,x}, false));
+                }
+            }
+            if (attackPos.Contains(new int[,]{{pos[0],pos[1]},{8,8}})) return true;
+            else return false;
         }
 
     }
