@@ -122,7 +122,38 @@ namespace Chess0
                         }
                     }
                     if (c){
-                        if (castle[turn,0]) {}
+                        if (turn == 0){ //white castle
+                            if (castle[0,0]){//queenside
+                                if (board[0,1] == "  " && board[0,2] == "  " & board[0,3] == "  "){
+                                    if (!(checkIfAttacked(new int[]{0,1},1) || checkIfAttacked(new int[]{0,2},1) ||checkIfAttacked(new int[]{0,3},1))){
+                                        //ADD CASTLE CODE LATER
+                                    }
+                                }
+                            }
+                            if (castle[0,1]){//kingside
+                                if (board[0,5] == "  " && board[0,6] == "  "){
+                                    if (!(checkIfAttacked(new int[]{0,5},1) || checkIfAttacked(new int[]{0,6},1))){
+                                        //ADD CASTLE CODE LATER
+                                    }
+                                }
+                            }
+                        }
+                        else{ //black castle
+                            if (castle[1,0]){//queenside
+                                if (board[7,1] == "  " && board[7,2] == "  " & board[7,3] == "  "){
+                                    if (!(checkIfAttacked(new int[]{7,1},0) || checkIfAttacked(new int[]{7,2},0) ||checkIfAttacked(new int[]{7,3},0))){
+                                        //ADD CASTLE CODE LATER
+                                    }
+                                }
+                            }
+                            if (castle[1,1]){//kingside
+                                if (board[1,5] == "  " && board[1,6] == "  "){
+                                    if (!(checkIfAttacked(new int[]{1,5},0) || checkIfAttacked(new int[]{1,6},0))){
+                                        //ADD CASTLE CODE LATER
+                                    }
+                                }
+                            }
+                        }
                     }
                     break;
                 case 'B':
