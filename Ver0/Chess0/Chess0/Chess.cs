@@ -114,7 +114,7 @@ namespace Chess0
                             }
                         }
                     break;
-                case 'K':
+                case 'K': //king movement
                     for (int y = -1; y<2; y++) if (pos[0] + y > -1 && pos[0] + y < 8){//basic king moves in every direction
                         for (int x = -1; x<2; x++) if (pos[1] + x > -1 && pos[1] + x < 8 && !(x==0 && y==0)){
                             if (board[pos[0]+y,pos[1]+x]=="  ") possibleMoves.Add(new int[,] {{pos[0]+y,pos[1]+x},{8,8} });
@@ -156,8 +156,8 @@ namespace Chess0
                         }
                     }
                     break;
-                case 'B':
-
+                case 'B': //bishop movement
+                        possibleMoves.AddRange(checkBishopMoves(pos));
                     break;
                 case 'R':
 
@@ -170,7 +170,7 @@ namespace Chess0
             return possibleMoves.ToArray();
         }
 
-        public bool checkIfAttacked(int[] pos, int a){
+        public bool checkIfAttacked(int[] pos, int a){ //check if a position is currently being attacked
             List<int[,]> attackPos = new List<int[,]>{};
             char attacker = Convert.ToChar(Convert.ToString(a));
             for (int y=0; y<8;y++){
@@ -180,6 +180,22 @@ namespace Chess0
             }
             if (attackPos.Contains(new int[,]{{pos[0],pos[1]},{8,8}})) return true;
             else return false;
+        }
+
+        public int[][,] checkBishopMoves(int[] pos){
+            List<int[,]> possibleMoves = new List<int[,]>{};
+            for (int i = 0; i < 7; i++){
+                if (pos[0]-i>-1 && pos[1]-i>-1) {
+                    if (board[pos[0]-i,pos[1]-i] == "  ") possibleMoves.Add(new int[,] {{pos[0]-i,pos[1]-i},{8,8}});
+                    else if ((Convert.ToInt16(Convert.ToString(board[pos[0]-i,pos[1]-i][0]))==turn)) possibleMoves.Add(new int[,] {{pos[0]-i,pos[1]-i},{pos[0]-i,pos[1]-i}});
+                    }
+            }
+
+// pos[0]+i<8 && pos[1]+i<8
+
+
+
+            return possibleMoves.ToArray();
         }
 
     }
