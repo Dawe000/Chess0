@@ -86,10 +86,14 @@ namespace Chess0
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    if (Convert.ToInt32(Convert.ToString(board[y, x][0])) == turn)
+                    if (board[y, x][0]!=' ')
                     {
-                        nextLegalMoves.AddRange(CalculateLegalMoves(new int[] { y, x }));
+                        if (Convert.ToInt32(Convert.ToString(board[y, x][0])) == turn)
+                        {
+                            nextLegalMoves.AddRange(CalculateLegalMoves(new int[] { y, x }));
+                        }
                     }
+                    
                 }
             }
             if (nextLegalMoves.Count == 0) 
@@ -220,8 +224,8 @@ namespace Chess0
                         if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]-1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
                         if (pos[1] + 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]+1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
                         if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{10,10} }); //move 2 forward
-                        if (enPassant[0] < 8) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
-                        if (enPassant[0] < 8)  if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
+                        if (enPassant[0] < 8) if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
+                        if (enPassant[0] < 8) if (pos[1] + 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
                     else{//black
                         if (board[pos[0]-1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]},{8,8} }); //move forward
