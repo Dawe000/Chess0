@@ -6,7 +6,7 @@ namespace Chess0
     {
         static void Main(string[] args)
         {
-
+            Console.WriteLine("Welcome to Chess0");
             Chess c = new Chess(new string[] { "a", "b" },0,0);
             c.start();
             Console.Read();
