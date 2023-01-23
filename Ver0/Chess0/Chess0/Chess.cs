@@ -15,6 +15,7 @@ namespace Chess0
         int[] enPassant;
         bool check;
         bool[,] castle;
+        string gameState;
 
         public Chess(string[] iPlayers, int iTime, int iIncrement)
         {
@@ -34,6 +35,67 @@ namespace Chess0
             turn = 0; //0 is white, 1 is black
             enPassant = new int[] {8,8}; //position of en-passantable pawn
             castle = new bool[,] {{true,true},{true,true}}; //queenside, kingside
+            gameState = "ongoing";
+        }
+        
+        public void Move()
+        {
+            int[] pos = new int[2];
+            Console.Write("Input y coord: ");
+            pos[0] = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Input x coord: ");
+            pos[1] = Convert.ToInt32(Console.ReadLine());
+            int[][,] moves = (CalculateLegalMoves(pos));
+            foreach (int[,] i in moves)
+            {
+                foreach (int j in i)
+                {
+                    Console.WriteLine(j);
+                }
+            }
+            Console.Write("Select Option: ");
+            int opt = Convert.ToInt32(Console.ReadLine());
+            UpdateBoard(pos, moves[opt]);
+            if (turn == 1) turn = 0;
+            else turn = 1;
+
+            int[] kingPos = new int[] { 0, 0 };
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    if (board[y, x][1] == 'K')
+                    {
+                        if (Convert.ToInt32(Convert.ToString(board[y, x][0])) == turn)
+                        {
+                            kingPos[0] = y; kingPos[1] = x; break;
+                        }
+                    }
+                }
+            }
+            char toCheck = '0';
+            if (turn == 0)
+            {
+                toCheck = '1';
+            }
+            check = CheckIfAttacked(kingPos, toCheck);
+
+
+            List<int[,]> nextLegalMoves = new List<int[,]> { };
+            for(int y = 0; y<8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    if (Convert.ToInt32(Convert.ToString(board[y, x][0])) == turn)
+                    {
+                        nextLegalMoves.AddRange(CalculateLegalMoves(new int[] { y, x }));
+                    }
+                }
+            }
+            if (nextLegalMoves.Count == 0) 
+            {
+                gameState = "checkmate";
+            }
         }
 
         public int[][,] CalculateLegalMoves(int[] pos)
@@ -42,6 +104,8 @@ namespace Chess0
             int[][,] moves = CheckPossibleMoves(pos);
             List<int[,]> legalMoves = new List<int[,]> { };
             string[,] currentBoard = (string[,])board.Clone();
+            int[] currentEnPassant = (int[])enPassant.Clone();
+            bool[,] currentCastle = (bool[,])castle.Clone();
             foreach (int[,] m in moves)
             {
                 UpdateBoard(pos, m);
@@ -68,8 +132,9 @@ namespace Chess0
                 {
                     legalMoves.Add(m);
                 }
-                Console.WriteLine("cycle");
                 board = (string[,]) currentBoard.Clone();
+                castle = (bool[,])currentCastle.Clone();
+                enPassant = (int[])currentEnPassant.Clone();
             }
             return legalMoves.ToArray();
         }
@@ -79,6 +144,8 @@ namespace Chess0
             char type = board[pos[0], pos[1]][1];
             int attacker = Convert.ToInt32(Convert.ToString(board[pos[0], pos[1]][0]));
             board[pos[0], pos[1]] = "  ";
+            enPassant[0] = 8;
+            enPassant[1] = 8;
             if (move[1,0] == 9)
             {
                 if (attacker == 0)
@@ -119,7 +186,7 @@ namespace Chess0
                 board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
                 enPassant[0] = move[0, 0];
                 enPassant[1] = move[0, 1]; 
-            }
+            } 
             else if (move[1,0] == 8)//no take
             {
                 board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
@@ -161,8 +228,8 @@ namespace Chess0
                         if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]-1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{pos[0]-1,pos[1]-1}}); //attack to the left
                         if (pos[1] + 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]+1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{pos[0]-1,pos[1]+1}}); //attack to the right
                         if (board[pos[0]-1,pos[1]]=="  " && board[pos[0]-2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]},{10,10} }); //move 2 forward
-                        if (enPassant[0] < 8) if (board[pos[0]-1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
-                        if (enPassant[0] < 8)  if (board[pos[0]-1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
+                        if (enPassant[0] < 8) if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
+                        if (enPassant[0] < 8) if (pos[1] + 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
                     break;
                 case 'N': //knight movement
@@ -300,6 +367,7 @@ namespace Chess0
         }
 
         public int[][,] checkRookMoves(int[] pos, int attacker)
+
         {
             List<int[,]> possibleMoves = new List<int[,]> { };
             for (int i = 1; i < 8; i++) //down
