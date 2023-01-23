@@ -8,7 +8,7 @@ namespace Chess0
         {
 
             Chess c = new Chess(new string[] { "a", "b" },0,0);
-            c.Move();
+            c.start();
             Console.Read();
 
         }

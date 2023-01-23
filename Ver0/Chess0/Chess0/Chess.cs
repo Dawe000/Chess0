@@ -38,6 +38,22 @@ namespace Chess0
             gameState = "ongoing";
         }
         
+        public void start() 
+        { 
+            while (gameState == "ongoing")
+            {
+                Move();
+                for (int y = 0; y < 8; y++)
+                {
+                    for (int x = 0; x<8; x++)
+                    {
+                        Console.Write(board[y, x]);
+                    }
+                    Console.WriteLine();
+                }
+            }
+            Console.WriteLine(gameState);
+        }
         public void Move()
         {
             int[] pos = new int[2];
@@ -96,9 +112,13 @@ namespace Chess0
                     
                 }
             }
-            if (nextLegalMoves.Count == 0) 
+            if (nextLegalMoves.Count == 0 && check == true) 
             {
                 gameState = "checkmate";
+            }
+            else if (nextLegalMoves.Count == 0)
+            {
+                gameState = "stalemate";
             }
         }
 
