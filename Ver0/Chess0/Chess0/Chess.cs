@@ -22,7 +22,7 @@ namespace Chess0
                     { "0R","0N","0B","0Q","0K","0B","0N","0R" },
                     { "0P","0P","0P","0P","0P","0P","0P","0P" },
                     { "  ","  ","  ","  ","  ","  ","  ","  " },
-                    { "  ","  ","  ","0B","  ","  ","  ","  " },
+                    { "  ","  ","  ","  ","  ","  ","  ","  " },
                     { "  ","  ","  ","  ","  ","  ","  ","  " },
                     { "  ","  ","  ","  ","  ","  ","  ","  " },
                     { "1P","1P","1P","1P","1P","1P","1P","1P" },
@@ -36,8 +36,108 @@ namespace Chess0
             castle = new bool[,] {{true,true},{true,true}}; //queenside, kingside
         }
 
-        public Chess(PGN iPGN){
-            
+        public int[][,] CalculateLegalMoves(int[] pos)
+        {
+            int attacker = Convert.ToInt32(Convert.ToString(board[pos[0], pos[1]][0]));
+            int[][,] moves = CheckPossibleMoves(pos);
+            List<int[,]> legalMoves = new List<int[,]> { };
+            string[,] currentBoard = (string[,])board.Clone();
+            foreach (int[,] m in moves)
+            {
+                UpdateBoard(pos, m);
+                int[] kingPos = new int[] { 0, 0 };
+                for (int x = 0; x<8; x++)
+                {
+                    for (int y = 0; y < 8; y++)
+                    {
+                        if (board[y, x][1] == 'K') 
+                        {  
+                            if (Convert.ToInt32(Convert.ToString(board[y, x][0])) == attacker)
+                            {
+                                kingPos[0] = y; kingPos[1] = x; break;
+                            }
+                        }
+                    }
+                }
+                char toCheck = '0';
+                if (attacker == 0)
+                {
+                    toCheck = '1';
+                }
+                if (CheckIfAttacked(kingPos, toCheck) == false)
+                {
+                    legalMoves.Add(m);
+                }
+                Console.WriteLine("cycle");
+                board = (string[,]) currentBoard.Clone();
+            }
+            return legalMoves.ToArray();
+        }
+
+        public void UpdateBoard(int[] pos,int[,] move)
+        {
+            char type = board[pos[0], pos[1]][1];
+            int attacker = Convert.ToInt32(Convert.ToString(board[pos[0], pos[1]][0]));
+            board[pos[0], pos[1]] = "  ";
+            if (move[1,0] == 9)
+            {
+                if (attacker == 0)
+                {
+                    castle[0, 0] = false; castle[0, 1] = false;
+                    if (move[0, 1] == 2)
+                    {
+                        board[0, 0] = "  ";
+                        board[0, 2] = "0K";
+                        board[0, 3] = "0R";
+                    }
+                    else
+                    {
+                        board[0, 5] = "0R";
+                        board[0, 6] = "0K";
+                        board[0, 7] = "  ";
+                    }
+                }
+                else
+                    castle[1, 0] = false; castle[1, 1] = false;
+                {
+                    if (move[0, 1] == 2)
+                    {
+                        board[7, 0] = "  ";
+                        board[7, 2] = "0K";
+                        board[7, 3] = "0R";
+                    }
+                    else
+                    {
+                        board[7, 5] = "0R";
+                        board[7, 6] = "0K";
+                        board[7, 7] = "  ";
+                    }
+                }
+            }//castling
+            else if (move[1, 0] == 10)
+            {
+                board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
+                enPassant[0] = move[0, 0];
+                enPassant[1] = move[0, 1]; 
+            }
+            else if (move[1,0] == 8)//no take
+            {
+                board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
+            }
+            else
+            {
+                board[move[1, 0], move[1, 1]] = "  ";
+                board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
+            }
+            if (type == 'K')
+            {
+                castle[attacker, 0] = false;
+                castle[attacker, 1] = false;
+            }
+            if (board[0,0][1] != 'R') castle[0, 0] = false;
+            if (board[0,7][1] != 'R') castle[0, 1] = false;
+            if (board[7, 0][1] != 'R') castle[1, 0] = false;
+            if (board[7, 7][1] != 'R') castle[1, 1] = false;
         }
 
         public int[][,] CheckPossibleMoves(int[] pos) //returns all legal moves for a piece
@@ -50,17 +150,17 @@ namespace Chess0
                 case 'P': //pawn movement
                     if (attacker == 0){//white
                         if (board[pos[0]+1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]},{8,8} }); //move forward
-                        if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]-1]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
-                        if (pos[1] - 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]+1]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
-                        if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{8,8} }); //move 2 forward
+                        if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]-1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
+                        if (pos[1] + 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]+1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
+                        if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{10,10} }); //move 2 forward
                         if (enPassant[0] < 8) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
                         if (enPassant[0] < 8)  if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
                     else{//black
                         if (board[pos[0]-1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]},{8,8} }); //move forward
-                        if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]-1]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{pos[0]-1,pos[1]-1}}); //attack to the left
-                        if (pos[1] - 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]+1]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{pos[0]-1,pos[1]+1}}); //attack to the right
-                        if (board[pos[0]-1,pos[1]]=="  " && board[pos[0]-2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]},{8,8} }); //move 2 forward
+                        if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]-1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{pos[0]-1,pos[1]-1}}); //attack to the left
+                        if (pos[1] + 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]+1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{pos[0]-1,pos[1]+1}}); //attack to the right
+                        if (board[pos[0]-1,pos[1]]=="  " && board[pos[0]-2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]},{10,10} }); //move 2 forward
                         if (enPassant[0] < 8) if (board[pos[0]-1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
                         if (enPassant[0] < 8)  if (board[pos[0]-1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
@@ -123,45 +223,49 @@ namespace Chess0
                         }
                     }
                     
-                    if (attacker == 0){ //white castle
-                        if (castle[0,0]){//queenside
-                            if (board[0,1] == "  " && board[0,2] == "  " & board[0,3] == "  "){
-                                
-                                    //ADD CASTLE CODE LATER
-                                
+                    if (check == false)
+                    {
+                        if (attacker == 0){ //white castle
+                            if (castle[0,0]){//queenside
+                                if (board[0, 1] == "  " && board[0,2] == "  " && board[0,3] == "  " && CheckIfAttacked(new int[] { 0, 2 },'1') == false && CheckIfAttacked(new int[] { 0, 3 }, '1') == false)
+                                {
+                                    possibleMoves.Add(new int[,] { { 0 , 2 }, {9,9} });
+                                }
+                            }
+                            if (castle[0,1]){//kingside
+                                if (board[0,5] == "  " && board[0,6] == "  " && CheckIfAttacked(new int[] { 0, 5 }, '1') == false && CheckIfAttacked(new int[] { 0, 6 }, '1') == false)
+                                {
+                                    possibleMoves.Add(new int[,] { { 0, 6 }, { 9, 9 } });
+                                }
                             }
                         }
-                        if (castle[0,1]){//kingside
-                            if (board[0,5] == "  " && board[0,6] == "  "){
-                                
-                                    //ADD CASTLE CODE LATER
-                                
+                        else{ //black castle
+                            if (castle[1,0]){//queenside
+                                if (board[7, 1] == "  " && board[7,2] == "  " && board[7,3] == "  " && CheckIfAttacked(new int[] { 7, 2 }, '0') == false && CheckIfAttacked(new int[] { 7, 3 }, '0') == false)
+                                {
+                                    possibleMoves.Add(new int[,] { { 7, 2 }, { 9, 9 } });
+                                }
+                            }
+                            if (castle[1,1]){//kingside
+                                if (board[7,5] == "  " && board[7,6] == "  " && CheckIfAttacked(new int[] { 7, 5 }, '0') == false && CheckIfAttacked(new int[] { 7, 6 }, '0') == false)
+                                {
+                                    possibleMoves.Add(new int[,] { { 7, 6 }, { 9, 9 } });
+                                }
                             }
                         }
                     }
-                    else{ //black castle
-                        if (castle[1,0]){//queenside
-                            if (board[7,1] == "  " && board[7,2] == "  " & board[7,3] == "  "){
-                                
-                                    //ADD CASTLE CODE LATER
-                                
-                            }
-                        }
-                        if (castle[1,1]){//kingside
-                            if (board[1,5] == "  " && board[1,6] == "  "){
-                                
-                                    //ADD CASTLE CODE LATER
-                                
-                            }
-                        }
-                    }
+                    
                     
                     break;
                 case 'B': //bishop movement
                         possibleMoves.AddRange(checkBishopMoves(pos,attacker));
                     break;
-                case 'R':
-
+                case 'R': //rook movement
+                        possibleMoves.AddRange(checkRookMoves(pos, attacker));
+                    break;
+                case 'Q':
+                        possibleMoves.AddRange(checkBishopMoves(pos, attacker));
+                        possibleMoves.AddRange(checkRookMoves(pos, attacker));
                     break;
                 default:
 
@@ -171,13 +275,109 @@ namespace Chess0
             return possibleMoves.ToArray();
         }
 
+        public bool CheckIfAttacked(int[] pos,char attacker)
+        {
+            check = true;
+            for (int y = 0; y<8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    if (board[y, x][0] == attacker)
+                    {
+                        foreach (int[,] i in CheckPossibleMoves(new int[]{ y, x }))
+                        {
+                            if (i[0, 0] == pos[0] && i[0, 1] == pos[1])
+                            {
+                                check = false;
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            check = false;
+            return false;
+        }
 
         public int[][,] checkRookMoves(int[] pos, int attacker)
         {
             List<int[,]> possibleMoves = new List<int[,]> { };
-
-            
-
+            for (int i = 1; i < 8; i++) //down
+            {
+                if (pos[0] - i > -1)
+                {
+                    if (board[pos[0] - i, pos[1]] == "  ")
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0] - i,pos[1]}, { 8, 8 } });
+                    }
+                    else if ((Convert.ToInt16(Convert.ToString(board[pos[0] - i, pos[1]][0])) != attacker))
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0] - i, pos[1] }, { pos[0] - i, pos[1] } });
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < 8; i++) //up
+            {
+                if (pos[0] + i < 8)
+                {
+                    if (board[pos[0] + i, pos[1]] == "  ")
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0] + i, pos[1] }, { 8, 8 } });
+                    }
+                    else if ((Convert.ToInt16(Convert.ToString(board[pos[0] + i, pos[1]][0])) != attacker))
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0] + i, pos[1] }, { pos[0] + i, pos[1] } });
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < 8; i++) //left
+            {
+                if (pos[1] - i > -1)
+                {
+                    if (board[pos[0], pos[1] - i] == "  ")
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0], pos[1] - i }, { 8, 8 } });
+                    }
+                    else if ((Convert.ToInt16(Convert.ToString(board[pos[0], pos[1]-i][0])) != attacker))
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0], pos[1]-i }, { pos[0], pos[1] -i } });
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            for (int i = 1; i < 8; i++) //right
+            {
+                if (pos[1] + i < 8)
+                {
+                    if (board[pos[0], pos[1] + i] == "  ")
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0], pos[1] + i }, { 8, 8 } });
+                    }
+                    else if ((Convert.ToInt16(Convert.ToString(board[pos[0], pos[1] + i][0])) != attacker))
+                    {
+                        possibleMoves.Add(new int[,] { { pos[0], pos[1] + i }, { pos[0], pos[1] + i } });
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
             return possibleMoves.ToArray();
         }
         public int[][,] checkBishopMoves(int[] pos,int attacker){

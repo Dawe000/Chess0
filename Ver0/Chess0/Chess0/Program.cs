@@ -10,7 +10,7 @@ namespace Chess0
             move[0] = Convert.ToInt32(Convert.ToString(Console.ReadLine()));
             move[1] = Convert.ToInt32(Convert.ToString(Console.ReadLine()));
             Chess c = new Chess(new string[] { "a", "b" },0,0);
-            int[][,] moves = (c.CheckPossibleMoves(move));
+            int[][,] moves = (c.CalculateLegalMoves(move));
             foreach (int[,] i in moves)
             {
                 foreach (int j in i)
