@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Chess0
 {
     public class Chess
     {
-        string[,] board;
+        public string[,] board;
         string[] players;
         int[] points;
         int[] time;
         int increment;
-        int turn;
+        public int turn;
         int[] enPassant;
         bool check;
         bool[,] castle;
-        string gameState;
+        public string gameState;
+        MainChess game;
 
         public Chess(string[] iPlayers, int iTime, int iIncrement)
         {
@@ -35,43 +37,28 @@ namespace Chess0
             turn = 0; //0 is white, 1 is black
             enPassant = new int[] {8,8}; //position of en-passantable pawn
             castle = new bool[,] {{true,true},{true,true}}; //queenside, kingside
-            gameState = "ongoing";
+            gameState = "notbegun";
         }
         
-        public void start() 
-        { 
-            while (gameState == "ongoing")
-            {
-                Move();
-                for (int y = 0; y < 8; y++)
-                {
-                    for (int x = 0; x<8; x++)
-                    {
-                        Console.Write(board[y, x]);
-                    }
-                    Console.WriteLine();
-                }
-            }
-            Console.WriteLine(gameState);
-        }
-        public void Move()
+        public void start(MainChess sender) 
         {
-            int[] pos = new int[2];
-            Console.Write("Input y coord: ");
-            pos[0] = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Input x coord: ");
-            pos[1] = Convert.ToInt32(Console.ReadLine());
-            int[][,] moves = (CalculateLegalMoves(pos));
-            foreach (int[,] i in moves)
-            {
-                foreach (int j in i)
-                {
-                    Console.WriteLine(j);
-                }
-            }
-            Console.Write("Select Option: ");
-            int opt = Convert.ToInt32(Console.ReadLine());
-            UpdateBoard(pos, moves[opt]);
+            game = sender;
+            game.UpdateBoard();
+            gameState = "In Play";
+ 
+        }
+        public void Move(int[] pos,int[,] move)
+        {
+
+            //Console.Write("Input y coord: ");
+            //pos[0] = Convert.ToInt32(Console.ReadLine());
+            //Console.Write("Input x coord: ");
+            //pos[1] = Convert.ToInt32(Console.ReadLine());
+
+
+
+            //int opt = Convert.ToInt32(Console.ReadLine());
+            UpdateBoard(pos, move);
             if (turn == 1) turn = 0;
             else turn = 1;
 
@@ -94,7 +81,6 @@ namespace Chess0
             {
                 toCheck = '1';
             }
-            check = CheckIfAttacked(kingPos, toCheck);
 
 
             List<int[,]> nextLegalMoves = new List<int[,]> { };
@@ -112,7 +98,7 @@ namespace Chess0
                     
                 }
             }
-            if (nextLegalMoves.Count == 0 && check == true) 
+            if (nextLegalMoves.Count == 0 && CheckIfAttacked(kingPos, toCheck)) 
             {
                 gameState = "checkmate";
             }
@@ -189,18 +175,19 @@ namespace Chess0
                     }
                 }
                 else
+                { 
                     castle[1, 0] = false; castle[1, 1] = false;
-                {
+                
                     if (move[0, 1] == 2)
                     {
                         board[7, 0] = "  ";
-                        board[7, 2] = "0K";
-                        board[7, 3] = "0R";
+                        board[7, 2] = "1K";
+                        board[7, 3] = "1R";
                     }
                     else
                     {
-                        board[7, 5] = "0R";
-                        board[7, 6] = "0K";
+                        board[7, 5] = "1R";
+                        board[7, 6] = "1K";
                         board[7, 7] = "  ";
                     }
                 }
@@ -244,16 +231,16 @@ namespace Chess0
                         if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]-1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{pos[0]+1,pos[1]-1}}); //attack to the left
                         if (pos[1] + 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]+1,pos[1]+1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{pos[0]+1,pos[1]+1}}); //attack to the right
                         if (board[pos[0]+1,pos[1]]=="  " && board[pos[0]+2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]},{10,10} }); //move 2 forward
-                        if (enPassant[0] < 8) if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
-                        if (enPassant[0] < 8) if (pos[1] + 1 != 8) if (board[pos[0]+1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
+                        if (enPassant[0] < 8) if (pos[1] - 1 != -1) if (board[pos[0]+1,pos[1]-1]=="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
+                        if (enPassant[0] < 8) if (pos[1] + 1 != 8) if (board[pos[0]+1,pos[1]+1]=="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
                     else{//black
                         if (board[pos[0]-1,pos[1]]=="  ") possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]},{8,8} }); //move forward
                         if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]-1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{pos[0]-1,pos[1]-1}}); //attack to the left
                         if (pos[1] + 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  ") if (Convert.ToInt16(Convert.ToString(board[pos[0]-1,pos[1]+1][0]))!=attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{pos[0]-1,pos[1]+1}}); //attack to the right
-                        if (board[pos[0]-1,pos[1]]=="  " && board[pos[0]-2,pos[1]]=="  " && pos[0]==1) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]},{10,10} }); //move 2 forward
-                        if (enPassant[0] < 8) if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]!="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
-                        if (enPassant[0] < 8) if (pos[1] + 1 != 8) if (board[pos[0]-1,pos[1]+1]!="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
+                        if (board[pos[0]-1,pos[1]]=="  " && board[pos[0]-2,pos[1]]=="  " && pos[0]==6) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]},{10,10} }); //move 2 forward
+                        if (enPassant[0] < 8) if (pos[1] - 1 != -1) if (board[pos[0]-1,pos[1]-1]=="  "&&pos[0]==enPassant[0]&&pos[1]-1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-1},{enPassant[0],enPassant[1]} }); //en passant left
+                        if (enPassant[0] < 8) if (pos[1] + 1 != 8) if (board[pos[0]-1,pos[1]+1]=="  "&&pos[0]==enPassant[0]&&pos[1]+1==enPassant[1]) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+1},{enPassant[0],enPassant[1]} }); //en passant right
                     }
                     break;
                 case 'N': //knight movement
@@ -261,48 +248,48 @@ namespace Chess0
                             if (pos[1]-1>-1){ //left 1
                                 
                                 if (board[pos[0]-2,pos[1]-1][0]==' ') possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]-1},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]-2,pos[1]-1][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]-1},{pos[0]-2,pos[1]-1}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]-2,pos[1]-1][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]-1},{pos[0]-2,pos[1]-1}});
                             }
                             if (pos[1]+1<8){ //right 1
                                 
                                 if (board[pos[0]-2,pos[1]+1][0]==' ') possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]+1},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]-2,pos[1]+1][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]+1},{pos[0]-2,pos[1]+1}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]-2,pos[1]+1][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]-2,pos[1]+1},{pos[0]-2,pos[1]+1}});
                             }
                         }
-                        else if (pos[0]+2<8){ //move up 2
+                        if (pos[0]+2<8){ //move up 2
                             if (pos[1]-1>-1){ //left 1
                                 
                                 if (board[pos[0]+2,pos[1]-1][0]==' ') possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]-1},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]+2,pos[1]-1][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]-1},{pos[0]+2,pos[1]-1}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]+2,pos[1]-1][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]-1},{pos[0]+2,pos[1]-1}});
                             }
                             if (pos[1]+1<8){ //right 1
                                 
                                 if (board[pos[0]+2,pos[1]+1][0]==' ') possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]+1},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]+2,pos[1]+1][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]+1},{pos[0]+2,pos[1]+1}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]+2,pos[1]+1][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]+2,pos[1]+1},{pos[0]+2,pos[1]+1}});
                             }
                         }
-                        else if (pos[0]-1>-1){ //move down 1
+                        if (pos[0]-1>-1){ //move down 1
                             if (pos[1]-2>-1){ //left 2
                                 
                                 if (board[pos[0]-1,pos[1]-2][0]==' ') possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-2},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]-1,pos[1]-2][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-2},{pos[0]-1,pos[1]-2}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]-1,pos[1]-2][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]-2},{pos[0]-1,pos[1]-2}});
                             }
                             if (pos[1]+2<8){ //right 2
                                 
                                 if (board[pos[0]-1,pos[1]+2][0]==' ') possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+2},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]-1,pos[1]+2][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+2},{pos[0]-1,pos[1]+2}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]-1,pos[1]+2][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]-1,pos[1]+2},{pos[0]-1,pos[1]+2}});
                             }
                         }
-                        else if (pos[0]+1<8){ //move up 1
+                        if (pos[0]+1<8){ //move up 1
                             if (pos[1]-2>-1){ //left 2
                                 
                                 if (board[pos[0]+1,pos[1]-2][0]==' ') possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-2},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]+1,pos[1]-2][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-2},{pos[0]+1,pos[1]-2}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]+1,pos[1]-2][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]-2},{pos[0]+1,pos[1]-2}});
                             }
                             if (pos[1]+2<8){ //right 2
                                 
                                 if (board[pos[0]+1,pos[1]+2][0]==' ') possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+2},{8,8}});
-                                else if (Convert.ToInt16(board[pos[0]+2,pos[1]+2][0]) != attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+2},{pos[0]+1,pos[1]+2}});
+                                else if (Convert.ToInt32(Convert.ToString(board[pos[0]+1,pos[1]+2][0])) != attacker) possibleMoves.Add(new int[,] {{pos[0]+1,pos[1]+2},{pos[0]+1,pos[1]+2}});
                             }
                         }
                     break;
