@@ -15,14 +15,25 @@ namespace Chess0
         PictureBox[,] squares;
         Chess game;
         int[][,] moves;
-        Color[] colors;
+        Color[] boardColours;
+        Color moveColor;
+        Color checkColor;
+        Color backColor;
+        Color textColor;
+
         int[] lastPos;
 
         public MainChess()
         {
             InitializeComponent();
             
-            colors = new Color[] { Color.Gray, Color.Wheat };
+            boardColours = new Color[] { Color.Gray, Color.Wheat };
+            moveColor = Color.Green;
+            checkColor = Color.Red;
+            backColor = Color.White;
+            BackColor = backColor;
+            textColor = Color.Black;
+
             int c = 0;
             this.Height = 1200;
 
@@ -39,7 +50,7 @@ namespace Chess0
                     squares[y, x].Height = 90;
                     squares[y, x].Width = 90;
                     squares[y, x].Location = new Point(35+offsetx,50+offsety);
-                    squares[y, x].BackColor = colors[c];
+                    squares[y, x].BackColor = boardColours[c];
                     squares[y, x].MouseMove += MainChess_MouseMove;
                     squares[y, x].Click += PictureBoxClick;
                     squares[y, x].Name = Convert.ToString(y) + Convert.ToString(x);
@@ -63,11 +74,32 @@ namespace Chess0
 
         }
 
+        public void UpdateColors(Color newColor1, Color newColor2, Color newMoveColor, Color newCheckColor, Color newBackColor, Color newTextColor)
+        {
+            foreach (PictureBox p in squares)
+            {
+                if (p.BackColor == boardColours[0]) p.BackColor = newColor1;
+                else if (p.BackColor == boardColours[1]) p.BackColor = newColor2;
+                else if (p.BackColor == moveColor) p.BackColor = newMoveColor;
+                else if (p.BackColor == checkColor) p.BackColor = newCheckColor;
+                BackColor = newBackColor;
+            }
+            BackColor = newBackColor;
+
+            boardColours[0] = newColor1;
+            boardColours[1] = newColor2;
+            moveColor = newMoveColor;
+            checkColor = newCheckColor;
+            backColor = newBackColor;
+            textColor = newTextColor;
+        }
+
+
+
+
         public void PictureBoxClick(object sender, EventArgs e)
         {
-            Color moveColor = Color.Green;
             PictureBox p = (PictureBox)sender;
-            Console.WriteLine(p.Name);
             
 
             int[] pos = new int[] { Convert.ToInt32(Convert.ToString(p.Name[0])) , Convert.ToInt32(Convert.ToString(p.Name[1])) };
@@ -81,7 +113,7 @@ namespace Chess0
                     for (int x = 0; x < 8; x++)
                     {
 
-                        squares[y, x].BackColor = colors[c];
+                        squares[y, x].BackColor = boardColours[c];
                         if (c == 0) c = 1;
                         else c = 0;
 
@@ -103,7 +135,7 @@ namespace Chess0
                     for (int x = 0; x < 8; x++)
                     {
 
-                        squares[y, x].BackColor = colors[c];
+                        squares[y, x].BackColor = boardColours[c];
                         if (c == 0) c = 1;
                         else c = 0;
 
@@ -129,7 +161,7 @@ namespace Chess0
                     for (int x = 0; x < 8; x++)
                     {
 
-                        squares[y, x].BackColor = colors[c];
+                        squares[y, x].BackColor = boardColours[c];
                         if (c == 0) c = 1;
                         else c = 0;
 
@@ -141,6 +173,24 @@ namespace Chess0
                 moves = default;
             }
             lastPos = pos;
+
+            if (game.check)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    for (int x = 0; x < 8; x++)
+                    {
+                        if (game.board[y, x][1] == 'K')
+                        {
+                            if (Convert.ToInt64(Convert.ToString(game.board[y, x][0])) == game.turn)
+                            {
+                                squares[y, x].BackColor = checkColor;
+                            }
+                            
+                        }
+                    }
+                }
+            }
         }
 
         public void UpdateBoard()
@@ -202,6 +252,16 @@ namespace Chess0
             //yLabel.Text = Convert.ToString(Cursor.Position.Y);
         }
 
+        private void settingsIcon_Click(object sender, EventArgs e)
+        {
+            SettingsForm s = new SettingsForm(this,boardColours,checkColor,backColor,textColor,moveColor);
+            s.Show();
+            this.Enabled = false;
+        }
 
+        private void MainChess_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

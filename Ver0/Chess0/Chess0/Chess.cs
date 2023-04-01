@@ -14,7 +14,7 @@ namespace Chess0
         int increment;
         public int turn;
         int[] enPassant;
-        bool check;
+        public bool check;
         bool[,] castle;
         public string gameState;
         MainChess game;
@@ -81,7 +81,11 @@ namespace Chess0
             {
                 toCheck = '1';
             }
-
+            check = false;
+            if (CheckIfAttacked(kingPos, toCheck))
+            {
+                check = true;
+            }
 
             List<int[,]> nextLegalMoves = new List<int[,]> { };
             for(int y = 0; y<8; y++)
@@ -106,6 +110,8 @@ namespace Chess0
             {
                 gameState = "stalemate";
             }
+
+            
         }
 
         public int[][,] CalculateLegalMoves(int[] pos)
@@ -116,6 +122,7 @@ namespace Chess0
             string[,] currentBoard = (string[,])board.Clone();
             int[] currentEnPassant = (int[])enPassant.Clone();
             bool[,] currentCastle = (bool[,])castle.Clone();
+            bool currentCheck = check;
             foreach (int[,] m in moves)
             {
                 UpdateBoard(pos, m);
@@ -145,6 +152,7 @@ namespace Chess0
                 board = (string[,]) currentBoard.Clone();
                 castle = (bool[,])currentCastle.Clone();
                 enPassant = (int[])currentEnPassant.Clone();
+                check = currentCheck;
             }
             return legalMoves.ToArray();
         }
@@ -341,7 +349,7 @@ namespace Chess0
                 case 'R': //rook movement
                         possibleMoves.AddRange(checkRookMoves(pos, attacker));
                     break;
-                case 'Q':
+                case 'Q': //queen movement
                         possibleMoves.AddRange(checkBishopMoves(pos, attacker));
                         possibleMoves.AddRange(checkRookMoves(pos, attacker));
                     break;
@@ -352,7 +360,7 @@ namespace Chess0
 
             return possibleMoves.ToArray();
         }
-
+              
         public bool CheckIfAttacked(int[] pos,char attacker)
         {
             check = true;

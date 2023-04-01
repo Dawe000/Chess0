@@ -30,6 +30,8 @@ namespace Chess0
         private void InitializeComponent()
         {
             this.StateLabel = new System.Windows.Forms.Label();
+            this.settingsIcon = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.settingsIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // StateLabel
@@ -42,16 +44,31 @@ namespace Chess0
             this.StateLabel.TabIndex = 0;
             this.StateLabel.Text = "StateLabel";
             // 
+            // settingsIcon
+            // 
+            this.settingsIcon.BackgroundImage = global::Chess0.Resources.Icons.settingsicon;
+            this.settingsIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.settingsIcon.Image = global::Chess0.Resources.Icons.settingsicon;
+            this.settingsIcon.Location = new System.Drawing.Point(1345, 12);
+            this.settingsIcon.Name = "settingsIcon";
+            this.settingsIcon.Size = new System.Drawing.Size(125, 125);
+            this.settingsIcon.TabIndex = 1;
+            this.settingsIcon.TabStop = false;
+            this.settingsIcon.Click += new System.EventHandler(this.settingsIcon_Click);
+            // 
             // MainChess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1482, 1153);
+            this.ClientSize = new System.Drawing.Size(1482, 1055);
+            this.Controls.Add(this.settingsIcon);
             this.Controls.Add(this.StateLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainChess";
             this.Text = "MainChess";
+            this.Load += new System.EventHandler(this.MainChess_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainChess_MouseMove);
+            ((System.ComponentModel.ISupportInitialize)(this.settingsIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -60,5 +77,6 @@ namespace Chess0
         #endregion
 
         private System.Windows.Forms.Label StateLabel;
+        private System.Windows.Forms.PictureBox settingsIcon;
     }
 }
