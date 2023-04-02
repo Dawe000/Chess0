@@ -20,9 +20,10 @@ namespace Chess0
         Color checkColor;
         Color backColor;
         Color textColor;
-
         int[] lastPos;
 
+        Dictionary<string, Dictionary<string, Image>> textureSets;
+        string textureSet;
         public MainChess()
         {
             InitializeComponent();
@@ -33,6 +34,9 @@ namespace Chess0
             backColor = Color.White;
             BackColor = backColor;
             textColor = Color.Black;
+
+            InitTextures();
+            textureSet="Default";
 
             int c = 0;
             this.Height = 1200;
@@ -74,7 +78,7 @@ namespace Chess0
 
         }
 
-        public void UpdateColors(Color newColor1, Color newColor2, Color newMoveColor, Color newCheckColor, Color newBackColor, Color newTextColor)
+        public void UpdateColors(Color newColor1, Color newColor2, Color newMoveColor, Color newCheckColor, Color newBackColor, Color newTextColor, Dictionary<string, Dictionary<string, Image>> iTextureSets, string iTextureSet)
         {
             foreach (PictureBox p in squares)
             {
@@ -92,9 +96,44 @@ namespace Chess0
             checkColor = newCheckColor;
             backColor = newBackColor;
             textColor = newTextColor;
+            textureSet = iTextureSet;
+            textureSets = iTextureSets;
+            UpdateBoard();
         }
 
+        public void InitTextures()
+        {
+            Dictionary<string, Image> DefaultPieces=new Dictionary<string, Image> { };
+            DefaultPieces.Add("0B", ChessPieces._0B);
+            DefaultPieces.Add("0K", ChessPieces._0K);
+            DefaultPieces.Add("0N", ChessPieces._0N);
+            DefaultPieces.Add("0P", ChessPieces._0P);
+            DefaultPieces.Add("0R", ChessPieces._0R);
+            DefaultPieces.Add("0Q", ChessPieces._0Q);
+            DefaultPieces.Add("1B", ChessPieces._1B);
+            DefaultPieces.Add("1K", ChessPieces._1K);
+            DefaultPieces.Add("1N", ChessPieces._1N);
+            DefaultPieces.Add("1P", ChessPieces._1P);
+            DefaultPieces.Add("1R", ChessPieces._1R);
+            DefaultPieces.Add("1Q", ChessPieces._1Q);
+            Dictionary<string, Image> BPieces=new Dictionary<string, Image> { };
+            BPieces.Add("0B", BackupPieces.B0B);
+            BPieces.Add("0K", BackupPieces.B0K);
+            BPieces.Add("0N", BackupPieces.B0N);
+            BPieces.Add("0P", BackupPieces.B0P);
+            BPieces.Add("0R", BackupPieces.B0R);
+            BPieces.Add("0Q", BackupPieces.B0Q);
+            BPieces.Add("1B", BackupPieces.B1B);
+            BPieces.Add("1K", BackupPieces.B1K);
+            BPieces.Add("1N", BackupPieces.B1N);
+            BPieces.Add("1P", BackupPieces.B1P);
+            BPieces.Add("1R", BackupPieces.B1R);
+            BPieces.Add("1Q", BackupPieces.B1Q);
+            textureSets = new Dictionary<string, Dictionary<string, Image>> { };
+            textureSets.Add("Default", DefaultPieces);
+            textureSets.Add("Basic", BPieces);
 
+        }
 
 
         public void PictureBoxClick(object sender, EventArgs e)
@@ -199,48 +238,12 @@ namespace Chess0
             {
                 for (int x = 0; x < 8; x++)
                 {
-                    switch (game.board[y, x])
+                    if (game.board[y, x]!="  ")
                     {
-                        case "0P":
-                            squares[y,x].BackgroundImage=ChessPieces._0P;
-                            break;
-                        case "0K":
-                            squares[y, x].BackgroundImage = ChessPieces._0K;
-                            break;
-                        case "0Q":
-                            squares[y, x].BackgroundImage = ChessPieces._0Q;
-                            break;
-                        case "0N":
-                            squares[y, x].BackgroundImage = ChessPieces._0N;
-                            break;
-                        case "0R":
-                            squares[y, x].BackgroundImage = ChessPieces._0R;
-                            break;
-                        case "0B":
-                            squares[y, x].BackgroundImage = ChessPieces._0B;
-                            break;
-                        case "1P":
-                            squares[y, x].BackgroundImage = ChessPieces._1P;
-                            break;
-                        case "1K":
-                            squares[y, x].BackgroundImage = ChessPieces._1K;
-                            break;
-                        case "1Q":
-                            squares[y, x].BackgroundImage = ChessPieces._1Q;
-                            break;
-                        case "1N":
-                            squares[y, x].BackgroundImage = ChessPieces._1N;
-                            break;
-                        case "1R":
-                            squares[y, x].BackgroundImage = ChessPieces._1R;
-                            break;
-                        case "1B":
-                            squares[y, x].BackgroundImage = ChessPieces._1B;
-                            break;
-                        default:
-                            squares[y, x].BackgroundImage = null;
-                            break;
+                        squares[y, x].BackgroundImage = textureSets[textureSet][game.board[y, x]];
                     }
+                    
+                    
                 }
                 
             }
@@ -254,7 +257,7 @@ namespace Chess0
 
         private void settingsIcon_Click(object sender, EventArgs e)
         {
-            SettingsForm s = new SettingsForm(this,boardColours,checkColor,backColor,textColor,moveColor);
+            SettingsForm s = new SettingsForm(this,boardColours,checkColor,backColor,textColor,moveColor,textureSets,textureSet);
             s.Show();
             this.Enabled = false;
         }

@@ -47,6 +47,7 @@ namespace Chess0
             this.movediag = new System.Windows.Forms.ColorDialog();
             this.backdiag = new System.Windows.Forms.ColorDialog();
             this.textdiag = new System.Windows.Forms.ColorDialog();
+            this.TextureSelect = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.s1Clr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.s2Clr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkClr)).BeginInit();
@@ -169,11 +170,23 @@ namespace Chess0
             this.backClr.TabIndex = 10;
             this.backClr.TabStop = false;
             // 
+            // TextureSelect
+            // 
+            this.TextureSelect.Font = new System.Drawing.Font("SF Movie Poster", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TextureSelect.FormattingEnabled = true;
+            this.TextureSelect.ItemHeight = 25;
+            this.TextureSelect.Location = new System.Drawing.Point(12, 396);
+            this.TextureSelect.Name = "TextureSelect";
+            this.TextureSelect.Size = new System.Drawing.Size(204, 54);
+            this.TextureSelect.TabIndex = 11;
+            this.TextureSelect.SelectedIndexChanged += new System.EventHandler(this.TextureSelect_SelectedIndexChanged);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(360, 396);
+            this.ClientSize = new System.Drawing.Size(360, 453);
+            this.Controls.Add(this.TextureSelect);
             this.Controls.Add(this.backClr);
             this.Controls.Add(this.moveClr);
             this.Controls.Add(this.txtClr);
@@ -219,5 +232,6 @@ namespace Chess0
         private System.Windows.Forms.ColorDialog movediag;
         private System.Windows.Forms.ColorDialog backdiag;
         private System.Windows.Forms.ColorDialog textdiag;
+        private System.Windows.Forms.ListBox TextureSelect;
     }
 }

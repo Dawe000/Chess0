@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="BackupPieces.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BackupPieces.resx</DependentUpon>
+    </Compile>
     <Compile Update="ChessPieces.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -25,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="BackupPieces.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>BackupPieces.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="ChessPieces.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ChessPieces.Designer.cs</LastGenOutput>

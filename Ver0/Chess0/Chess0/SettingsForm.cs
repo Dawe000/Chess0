@@ -19,7 +19,9 @@ namespace Chess0
         Color color1;
         Color color2;
         MainChess main;
-        public SettingsForm(MainChess input, Color[] iColors, Color iCheck, Color iBack, Color iText, Color iMove)
+        Dictionary<string, Dictionary<string, Image>> textureSets;
+        string textureSet;
+        public SettingsForm(MainChess input, Color[] iColors, Color iCheck, Color iBack, Color iText, Color iMove, Dictionary<string, Dictionary<string, Image>> iTextureSets,string iTextureSet)
         {
             InitializeComponent();
             main = input;
@@ -29,6 +31,9 @@ namespace Chess0
             color2 = iColors[1];
             textColor = iText;
             backColor = iBack;
+
+            textureSets = iTextureSets;
+            textureSet = iTextureSet;
 
             s1Clr.BackColor = color1;
             s2Clr.BackColor = color2;
@@ -44,6 +49,8 @@ namespace Chess0
             movediag.Color = moveColor;
             checkdiag.Color = checkColor;
 
+            TextureSelect.Items.AddRange(textureSets.Keys.ToArray());
+            TextureSelect.SelectedItem = textureSet;
         }
 
 
@@ -51,7 +58,7 @@ namespace Chess0
         private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             main.Enabled = true;
-            main.UpdateColors(color1, color2, moveColor, checkColor, backColor, textColor);
+            main.UpdateColors(color1, color2, moveColor, checkColor, backColor, textColor,textureSets,textureSet);
         }
 
         private void Color1Btn_Click(object sender, EventArgs e)
@@ -95,6 +102,11 @@ namespace Chess0
             textdiag.ShowDialog();
             txtClr.BackColor = textdiag.Color;
             textColor = textdiag.Color;
+        }
+
+        private void TextureSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textureSet = (string)TextureSelect.SelectedItem;
         }
     }
 }
