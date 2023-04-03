@@ -242,7 +242,10 @@ namespace Chess0
                     {
                         squares[y, x].BackgroundImage = textureSets[textureSet][game.board[y, x]];
                     }
-                    
+                    else
+                    {
+                        squares[y, x].BackgroundImage = default;
+                    }
                     
                 }
                 
