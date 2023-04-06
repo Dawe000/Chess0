@@ -20,7 +20,7 @@ namespace Chess0
             //Console.Read();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainChess());
+            Application.Run(new StartForm());
 
 
         }

@@ -21,17 +21,31 @@ namespace Chess0
         Color backColor;
         Color textColor;
         int[] lastPos;
+        string p1Name;
+        string p2Name;
+        StartForm s;
 
         Dictionary<string, Dictionary<string, Image>> textureSets;
         string textureSet;
-        public MainChess()
+        public MainChess(string p1,string p2, StartForm inpForm)
         {
             InitializeComponent();
-            
+
+
+
+
+            s = inpForm;
+            p1Name = p1;
+            p2Name = p2;
+
+
+            P1NameLabel.Text = p1;
+            P2NameLabel.Text = p2;
+
             boardColours = new Color[] { Color.Gray, Color.Wheat };
             moveColor = Color.Green;
             checkColor = Color.Red;
-            backColor = Color.White;
+            backColor = Color.FromArgb( 128, 255, 255);
             BackColor = backColor;
             textColor = Color.Black;
 
@@ -191,7 +205,10 @@ namespace Chess0
                 game.Move(lastPos, correctMove);
                 moves = default;
                 UpdateBoard();
-                StateLabel.Text = game.gameState;
+                if (game.gameState == "checkmate" || game.gameState == "stalemate")
+                {
+                    Gamefinish();
+                }
             }
             else
             {
@@ -232,6 +249,26 @@ namespace Chess0
             }
         }
 
+        private void Gamefinish()
+        {
+            string w = p1Name;
+            if (game.turn == 0)
+            {
+                w = p2Name;
+            }
+            FinishForm f;
+            if (game.gameState == "checkmate")
+            {
+                f = new FinishForm(s, this, w);
+            }
+            else
+            {
+                f = new FinishForm(s, this, "");
+            }
+            f.Show();
+            this.Enabled = false;
+        }
+
         public void UpdateBoard()
         {
             for (int y = 0; y < 8; y++)
@@ -268,6 +305,14 @@ namespace Chess0
         private void MainChess_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void MainChess_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (s.Enabled == false)
+            {
+                s.Close();
+            }
         }
     }
 }

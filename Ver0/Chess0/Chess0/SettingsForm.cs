@@ -51,6 +51,8 @@ namespace Chess0
 
             TextureSelect.Items.AddRange(textureSets.Keys.ToArray());
             TextureSelect.SelectedItem = textureSet;
+
+            BackColor = backColor;
         }
 
 

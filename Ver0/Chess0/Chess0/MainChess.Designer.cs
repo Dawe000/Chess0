@@ -29,20 +29,11 @@ namespace Chess0
         /// </summary>
         private void InitializeComponent()
         {
-            this.StateLabel = new System.Windows.Forms.Label();
             this.settingsIcon = new System.Windows.Forms.PictureBox();
+            this.P1NameLabel = new System.Windows.Forms.Label();
+            this.P2NameLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.settingsIcon)).BeginInit();
             this.SuspendLayout();
-            // 
-            // StateLabel
-            // 
-            this.StateLabel.AutoSize = true;
-            this.StateLabel.Font = new System.Drawing.Font("SF Movie Poster", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.StateLabel.Location = new System.Drawing.Point(1110, 76);
-            this.StateLabel.Name = "StateLabel";
-            this.StateLabel.Size = new System.Drawing.Size(181, 39);
-            this.StateLabel.TabIndex = 0;
-            this.StateLabel.Text = "StateLabel";
             // 
             // settingsIcon
             // 
@@ -56,16 +47,41 @@ namespace Chess0
             this.settingsIcon.TabStop = false;
             this.settingsIcon.Click += new System.EventHandler(this.settingsIcon_Click);
             // 
+            // P1NameLabel
+            // 
+            this.P1NameLabel.AutoSize = true;
+            this.P1NameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.P1NameLabel.Font = new System.Drawing.Font("SF Movie Poster", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.P1NameLabel.Location = new System.Drawing.Point(1051, 611);
+            this.P1NameLabel.Name = "P1NameLabel";
+            this.P1NameLabel.Size = new System.Drawing.Size(106, 39);
+            this.P1NameLabel.TabIndex = 2;
+            this.P1NameLabel.Text = "label1";
+            // 
+            // P2NameLabel
+            // 
+            this.P2NameLabel.AutoSize = true;
+            this.P2NameLabel.BackColor = System.Drawing.Color.Transparent;
+            this.P2NameLabel.Font = new System.Drawing.Font("SF Movie Poster", 28.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.P2NameLabel.Location = new System.Drawing.Point(1042, 62);
+            this.P2NameLabel.Name = "P2NameLabel";
+            this.P2NameLabel.Size = new System.Drawing.Size(106, 39);
+            this.P2NameLabel.TabIndex = 3;
+            this.P2NameLabel.Text = "label1";
+            // 
             // MainChess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1482, 1055);
+            this.Controls.Add(this.P2NameLabel);
+            this.Controls.Add(this.P1NameLabel);
             this.Controls.Add(this.settingsIcon);
-            this.Controls.Add(this.StateLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainChess";
             this.Text = "MainChess";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainChess_FormClosed);
             this.Load += new System.EventHandler(this.MainChess_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainChess_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.settingsIcon)).EndInit();
@@ -75,8 +91,8 @@ namespace Chess0
         }
 
         #endregion
-
-        private System.Windows.Forms.Label StateLabel;
         private System.Windows.Forms.PictureBox settingsIcon;
+        private System.Windows.Forms.Label P1NameLabel;
+        private System.Windows.Forms.Label P2NameLabel;
     }
 }
