@@ -27,10 +27,11 @@ namespace Chess0
 
         Dictionary<string, Dictionary<string, Image>> textureSets;
         string textureSet;
-        public MainChess(string p1,string p2, StartForm inpForm)
+        public MainChess(string p1,string p2, StartForm inpForm,Image p1i, Image p2i)
         {
             InitializeComponent();
-
+            P1Pic.BackgroundImage = p1i;
+            P2Pic.BackgroundImage = p2i;
 
 
 
@@ -267,6 +268,11 @@ namespace Chess0
             }
             f.Show();
             this.Enabled = false;
+
+
+
+
+
         }
 
         public void UpdateBoard()

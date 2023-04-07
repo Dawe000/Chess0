@@ -134,6 +134,7 @@ namespace Chess0
             // P1Pic
             // 
             this.P1Pic.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.P1Pic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.P1Pic.Location = new System.Drawing.Point(24, 269);
             this.P1Pic.Name = "P1Pic";
             this.P1Pic.Size = new System.Drawing.Size(180, 180);
@@ -143,6 +144,7 @@ namespace Chess0
             // P2Pic
             // 
             this.P2Pic.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.P2Pic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.P2Pic.Location = new System.Drawing.Point(346, 269);
             this.P2Pic.Name = "P2Pic";
             this.P2Pic.Size = new System.Drawing.Size(180, 180);
@@ -152,6 +154,7 @@ namespace Chess0
             // P1ProfileButton
             // 
             this.P1ProfileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.P1ProfileButton.Enabled = false;
             this.P1ProfileButton.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.P1ProfileButton.Location = new System.Drawing.Point(113, 199);
             this.P1ProfileButton.Name = "P1ProfileButton";
@@ -159,10 +162,12 @@ namespace Chess0
             this.P1ProfileButton.TabIndex = 11;
             this.P1ProfileButton.Text = "Profile";
             this.P1ProfileButton.UseVisualStyleBackColor = false;
+            this.P1ProfileButton.Click += new System.EventHandler(this.P1ProfileButton_Click);
             // 
             // P2ProfileButton
             // 
             this.P2ProfileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.P2ProfileButton.Enabled = false;
             this.P2ProfileButton.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.P2ProfileButton.Location = new System.Drawing.Point(435, 199);
             this.P2ProfileButton.Name = "P2ProfileButton";
@@ -170,6 +175,7 @@ namespace Chess0
             this.P2ProfileButton.TabIndex = 12;
             this.P2ProfileButton.Text = "Profile";
             this.P2ProfileButton.UseVisualStyleBackColor = false;
+            this.P2ProfileButton.Click += new System.EventHandler(this.P2ProfileButton_Click);
             // 
             // StartForm
             // 

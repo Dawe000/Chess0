@@ -42,6 +42,7 @@ namespace Chess0
             // ProfileImage
             // 
             this.ProfileImage.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ProfileImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ProfileImage.Location = new System.Drawing.Point(12, 12);
             this.ProfileImage.Name = "ProfileImage";
             this.ProfileImage.Size = new System.Drawing.Size(180, 180);
@@ -125,6 +126,7 @@ namespace Chess0
             this.Controls.Add(this.ProfileImage);
             this.Name = "ProfileForm";
             this.Text = "ProfileForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ProfileForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.ProfileImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

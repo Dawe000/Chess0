@@ -60,8 +60,17 @@ namespace Chess0
 
         private void login()
         {
+            string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + UsernameBox.Text;
+            Image profileImage = default;
+            if (File.Exists(path + @"\ProfilePicture.png"))
+            {
+                using (FileStream stream = new FileStream(path + @"\ProfilePicture.png", FileMode.Open, FileAccess.Read))
+                {
+                    profileImage = Image.FromStream(stream);
+                }
+            }
             Crypt c = new Crypt(PasswordBox.Text);
-            main.Login(UsernameBox.Text, c.MD5HashGen(PasswordBox.Text), player);
+            main.Login(UsernameBox.Text, PasswordBox.Text, player,profileImage);
             this.Close();
             main.Enabled = true;
         }
@@ -94,7 +103,7 @@ namespace Chess0
             
             string NewDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + UsernameBox.Text;
             System.IO.Directory.CreateDirectory(NewDirectory);
-            using (StreamWriter sw = File.CreateText(NewDirectory + @"\ItemList.txt"))
+            using (StreamWriter sw = File.CreateText(NewDirectory + @"\Data.txt"))
             {
 
             }
@@ -103,6 +112,9 @@ namespace Chess0
             System.IO.File.WriteAllLines(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\Users.txt", userNames);
             hashes.Add(c.MD5HashGen(PasswordBox.Text + "EXTRA"));
             System.IO.File.WriteAllLines(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\Hashes.txt", hashes);
+            string data = "0^0^0^0";
+            string cypherText = c.FullEncrypt(data);
+            System.IO.File.WriteAllText(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\"+UsernameBox.Text+@"\Data.txt", cypherText);
             login();
         }
 

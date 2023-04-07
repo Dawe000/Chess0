@@ -32,7 +32,11 @@ namespace Chess0
             this.settingsIcon = new System.Windows.Forms.PictureBox();
             this.P1NameLabel = new System.Windows.Forms.Label();
             this.P2NameLabel = new System.Windows.Forms.Label();
+            this.P2Pic = new System.Windows.Forms.PictureBox();
+            this.P1Pic = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.settingsIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.P2Pic)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.P1Pic)).BeginInit();
             this.SuspendLayout();
             // 
             // settingsIcon
@@ -69,12 +73,34 @@ namespace Chess0
             this.P2NameLabel.TabIndex = 3;
             this.P2NameLabel.Text = "label1";
             // 
+            // P2Pic
+            // 
+            this.P2Pic.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.P2Pic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.P2Pic.Location = new System.Drawing.Point(1051, 121);
+            this.P2Pic.Name = "P2Pic";
+            this.P2Pic.Size = new System.Drawing.Size(180, 180);
+            this.P2Pic.TabIndex = 10;
+            this.P2Pic.TabStop = false;
+            // 
+            // P1Pic
+            // 
+            this.P1Pic.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.P1Pic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.P1Pic.Location = new System.Drawing.Point(1051, 666);
+            this.P1Pic.Name = "P1Pic";
+            this.P1Pic.Size = new System.Drawing.Size(180, 180);
+            this.P1Pic.TabIndex = 11;
+            this.P1Pic.TabStop = false;
+            // 
             // MainChess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1482, 1055);
+            this.Controls.Add(this.P1Pic);
+            this.Controls.Add(this.P2Pic);
             this.Controls.Add(this.P2NameLabel);
             this.Controls.Add(this.P1NameLabel);
             this.Controls.Add(this.settingsIcon);
@@ -85,6 +111,8 @@ namespace Chess0
             this.Load += new System.EventHandler(this.MainChess_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MainChess_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.settingsIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.P2Pic)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.P1Pic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -94,5 +122,7 @@ namespace Chess0
         private System.Windows.Forms.PictureBox settingsIcon;
         private System.Windows.Forms.Label P1NameLabel;
         private System.Windows.Forms.Label P2NameLabel;
+        private System.Windows.Forms.PictureBox P2Pic;
+        private System.Windows.Forms.PictureBox P1Pic;
     }
 }
