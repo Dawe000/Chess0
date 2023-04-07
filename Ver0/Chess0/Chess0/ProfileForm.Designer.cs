@@ -68,6 +68,7 @@ namespace Chess0
             this.ChangeButton.TabIndex = 11;
             this.ChangeButton.Text = "Change";
             this.ChangeButton.UseVisualStyleBackColor = false;
+            this.ChangeButton.Click += new System.EventHandler(this.ChangeButton_Click);
             // 
             // GamesLabel
             // 

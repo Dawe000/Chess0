@@ -16,5 +16,10 @@ namespace Chess0
         {
             InitializeComponent();
         }
+
+        private void ChangeButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
