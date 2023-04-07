@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Chess0
 {
@@ -268,8 +269,91 @@ namespace Chess0
             }
             f.Show();
             this.Enabled = false;
+            
+
+            string p1Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + p1Name + @"\Data.txt";
+            string p2Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + p2Name + @"\Data.txt";
+            Crypt c1 = default;
+            Crypt c2 = default;
+            if (p1Name != "Guest1") c1 = new Crypt(s.p1pass);
+            if (p2Name != "Guest2") c2 = new Crypt(s.p2pass);
 
 
+            if (game.turn == 1 && game.gameState == "checkmate") //p1 win
+            {
+                if (p1Name != "Guest1")
+                {
+                    string cypheredData = File.ReadAllText(p1Path);
+                    string plainData = c1.FullDecrypt(cypheredData);
+                    string[] plainArray = plainData.Split('^');
+                    plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                    plainArray[1] = Convert.ToString(Convert.ToInt64(plainArray[1]) + 1);
+                    plainData = string.Join('^', plainArray);
+                    cypheredData = c1.FullEncrypt(plainData);
+                    System.IO.File.WriteAllText(p1Path,cypheredData);
+                }
+                if (p2Name != "Guest2")
+                {
+                    string cypheredData = File.ReadAllText(p2Path);
+                    string plainData = c2.FullDecrypt(cypheredData);
+                    string[] plainArray = plainData.Split('^');
+                    plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                    plainArray[3] = Convert.ToString(Convert.ToInt64(plainArray[3]) + 1);
+                    plainData = string.Join('^', plainArray);
+                    cypheredData = c2.FullEncrypt(plainData);
+                    System.IO.File.WriteAllText(p2Path, cypheredData);
+                }
+            }
+            else if (game.turn == 0 && game.gameState == "checkmate") //p2 win
+            {
+                if (p1Name != "Guest1")
+                {
+                    string cypheredData = File.ReadAllText(p1Path);
+                    string plainData = c1.FullDecrypt(cypheredData);
+                    string[] plainArray = plainData.Split('^');
+                    plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                    plainArray[3] = Convert.ToString(Convert.ToInt64(plainArray[3]) + 1);
+                    plainData = string.Join('^', plainArray);
+                    cypheredData = c1.FullEncrypt(plainData);
+                    System.IO.File.WriteAllText(p1Path, cypheredData);
+                }
+                if (p2Name != "Guest2")
+                {
+                    string cypheredData = File.ReadAllText(p2Path);
+                    string plainData = c2.FullDecrypt(cypheredData);
+                    string[] plainArray = plainData.Split('^');
+                    plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                    plainArray[1] = Convert.ToString(Convert.ToInt64(plainArray[1]) + 1);
+                    plainData = string.Join('^', plainArray);
+                    cypheredData = c2.FullEncrypt(plainData);
+                    System.IO.File.WriteAllText(p2Path, cypheredData);
+                }
+            }
+            else //draw
+            {
+                if (p1Name != "Guest1")
+                {
+                    string cypheredData = File.ReadAllText(p1Path);
+                    string plainData = c1.FullDecrypt(cypheredData);
+                    string[] plainArray = plainData.Split('^');
+                    plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                    plainArray[2] = Convert.ToString(Convert.ToInt64(plainArray[2]) + 1);
+                    plainData = string.Join('^', plainArray);
+                    cypheredData = c1.FullEncrypt(plainData);
+                    System.IO.File.WriteAllText(p1Path, cypheredData);
+                }
+                if (p2Name != "Guest2")
+                {
+                    string cypheredData = File.ReadAllText(p2Path);
+                    string plainData = c2.FullDecrypt(cypheredData);
+                    string[] plainArray = plainData.Split('^');
+                    plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                    plainArray[2] = Convert.ToString(Convert.ToInt64(plainArray[2]) + 1);
+                    plainData = string.Join('^', plainArray);
+                    cypheredData = c2.FullEncrypt(plainData);
+                    System.IO.File.WriteAllText(p2Path, cypheredData);
+                }
+            }
 
 
 
@@ -317,6 +401,39 @@ namespace Chess0
         {
             if (s.Enabled == false)
             {
+                
+                if (game.gameState == "In Play")
+                {
+                    string p1Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + p1Name + @"\Data.txt";
+                    string p2Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + p2Name + @"\Data.txt";
+                    Crypt c1 = default;
+                    Crypt c2 = default;
+                    if (p1Name != "Guest1")  c1 = new Crypt(s.p1pass);
+                    if (p2Name != "Guest2")  c2 = new Crypt(s.p2pass);
+                    if (p1Name != "Guest1")
+                    {
+                        string cypheredData = File.ReadAllText(p1Path);
+                        string plainData = c1.FullDecrypt(cypheredData);
+                        string[] plainArray = plainData.Split('^');
+                        plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                        plainArray[2] = Convert.ToString(Convert.ToInt64(plainArray[2]) + 1);
+                        plainData = string.Join('^', plainArray);
+                        cypheredData = c1.FullEncrypt(plainData);
+                        System.IO.File.WriteAllText(p1Path, cypheredData);
+                    }
+                    if (p2Name != "Guest2")
+                    {
+                        string cypheredData = File.ReadAllText(p2Path);
+                        string plainData = c2.FullDecrypt(cypheredData);
+                        string[] plainArray = plainData.Split('^');
+                        plainArray[0] = Convert.ToString(Convert.ToInt64(plainArray[0]) + 1);
+                        plainArray[2] = Convert.ToString(Convert.ToInt64(plainArray[2]) + 1);
+                        plainData = string.Join('^', plainArray);
+                        cypheredData = c2.FullEncrypt(plainData);
+                        System.IO.File.WriteAllText(p2Path, cypheredData);
+                    }
+                    
+                }
                 s.Close();
             }
         }

@@ -15,8 +15,8 @@ namespace Chess0
 
         string p1Name = "Guest1";
         string p2Name = "Guest2";
-        string p1pass = "";
-        string p2pass = "";
+        public string p1pass = "";
+        public string p2pass = "";
         Image p1image=default;
         Image p2image = default;
         public StartForm()
