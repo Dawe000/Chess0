@@ -25,16 +25,34 @@ namespace Chess0
         string p1Name;
         string p2Name;
         StartForm s;
+        double[] playerTimes = new double[2];
+        int increment;
+        bool timed = false;
+        Label[] timeLabels=new Label[2];
+        Label[] pointsLabels = new Label[2];
 
         Dictionary<string, Dictionary<string, Image>> textureSets;
         string textureSet;
-        public MainChess(string p1,string p2, StartForm inpForm,Image p1i, Image p2i)
+        public MainChess(string p1,string p2, StartForm inpForm,Image p1i, Image p2i,int t, int i, bool tbool)
         {
             InitializeComponent();
             P1Pic.BackgroundImage = p1i;
             P2Pic.BackgroundImage = p2i;
 
+            pointsLabels[0] = PointsLabel1;
+            pointsLabels[1] = PointsLabel2;
 
+            playerTimes[0] = t;
+            playerTimes[1] = t;
+            increment = i;
+            timeLabels[0] = timeLabel1;
+            timeLabels[1] = timeLabel2;
+            timed = tbool;
+            if (timed)
+            {
+                updateTime(0);
+                updateTime(1);
+            }
 
             s = inpForm;
             p1Name = p1;
@@ -55,7 +73,7 @@ namespace Chess0
             textureSet="Default";
 
             int c = 0;
-            this.Height = 1200;
+            this.Height = 830;
 
             int offsety = 615;
             squares = new PictureBox[8, 8];
@@ -151,6 +169,7 @@ namespace Chess0
 
         }
 
+        
 
         public void PictureBoxClick(object sender, EventArgs e)
         {
@@ -204,6 +223,20 @@ namespace Chess0
                 {
                     if (pos[0] == move[0, 0] && pos[1] == move[0, 1]) correctMove = move;
                 }
+                if (timer.Enabled == true)
+                {
+                    playerTimes[game.turn] += increment;
+                    updateTime(game.turn);
+                }
+                if (timer.Enabled == false && timed == true && game.turn == 1)
+                {
+                    timer.Enabled = true;
+                }
+                if (game.gameState== "In Play")
+                {
+                    DrawButton.Enabled = true;
+                    ResignButton.Enabled = true;
+                }
                 game.Move(lastPos, correctMove);
                 moves = default;
                 UpdateBoard();
@@ -211,6 +244,7 @@ namespace Chess0
                 {
                     Gamefinish();
                 }
+                
             }
             else
             {
@@ -253,13 +287,14 @@ namespace Chess0
 
         private void Gamefinish()
         {
+            timer.Enabled = false;
             string w = p1Name;
             if (game.turn == 0)
             {
                 w = p2Name;
             }
             FinishForm f;
-            if (game.gameState == "checkmate")
+            if (game.gameState == "checkmate" || game.gameState == "Timeout")
             {
                 f = new FinishForm(s, this, w);
             }
@@ -279,7 +314,7 @@ namespace Chess0
             if (p2Name != "Guest2") c2 = new Crypt(s.p2pass);
 
 
-            if (game.turn == 1 && game.gameState == "checkmate") //p1 win
+            if (game.turn == 1 && (game.gameState == "checkmate"||game.gameState == "Timeout")) //p1 win
             {
                 if (p1Name != "Guest1")
                 {
@@ -304,7 +339,7 @@ namespace Chess0
                     System.IO.File.WriteAllText(p2Path, cypheredData);
                 }
             }
-            else if (game.turn == 0 && game.gameState == "checkmate") //p2 win
+            else if (game.turn == 0 && (game.gameState == "checkmate" || game.gameState == "Timeout")) //p2 win
             {
                 if (p1Name != "Guest1")
                 {
@@ -436,6 +471,79 @@ namespace Chess0
                 }
                 s.Close();
             }
+        }
+
+        void updateTime(int t)
+        {
+            string toReplace = "";
+            if (playerTimes[t] >= 60 * 60)
+            {
+                int hours;
+                hours = Convert.ToInt32(Math.Floor(playerTimes[t])) / (60 * 60);
+                toReplace += Convert.ToString(hours);
+                toReplace += ":";
+                int minutes;
+                minutes = (Convert.ToInt32(Math.Floor(playerTimes[t])) - hours * 60 *60) / 60;
+                toReplace += Convert.ToString(minutes).PadLeft(2, '0');
+                toReplace += ":";
+                int seconds;
+                seconds = Convert.ToInt32(Math.Floor(playerTimes[t])) - hours * 60 * 60 - minutes * 60;
+                toReplace += Convert.ToString(seconds).PadLeft(2,'0');
+            }
+            else if (playerTimes[t] >= 60)
+            {
+                int minutes;
+                minutes = Convert.ToInt32(Math.Floor(playerTimes[t])) / 60;
+                toReplace += Convert.ToString(minutes);
+                toReplace += ":";
+                int seconds;
+                seconds = Convert.ToInt32(Math.Floor(playerTimes[t])) - minutes * 60;
+                toReplace += Convert.ToString(seconds).PadLeft(2, '0');
+            }
+            else
+            {
+                try
+                {
+                    toReplace += Convert.ToString(playerTimes[t]).Substring(0, 4);
+                }
+                catch
+                {
+                    toReplace += Convert.ToString(playerTimes[t]);
+                }
+                
+            }
+            timeLabels[t].Text = toReplace;
+        }
+
+
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            int t = game.turn;
+            playerTimes[t] -= 0.01;
+            if (playerTimes[t] <= 0)
+            {
+                timer.Enabled = false;
+                game.gameState = "Timeout";
+                Gamefinish();
+                timeLabels[t].Text = "0";
+            }
+            else
+            {
+                updateTime(t);
+            }
+        }
+
+        private void DrawButton_Click(object sender, EventArgs e)
+        {
+            game.gameState = "stalemate";
+            Gamefinish();
+        }
+
+        private void ResignButton_Click(object sender, EventArgs e)
+        {
+            game.gameState = "checkmate";
+            Gamefinish();
         }
     }
 }

@@ -95,7 +95,7 @@ namespace Chess0
                 InfoLBL.Text = "Invalid password length";
                 return;
             }
-            if (!PasswordBox.Text.Any(char.IsDigit) || int.TryParse(PasswordBox.Text,out _) || !PasswordBox.Text.Any(ch => !char.IsLetterOrDigit(ch))|| PasswordBox.Text.Contains(' ')) 
+            if (!PasswordBox.Text.Any(char.IsLetter) || !PasswordBox.Text.Any(char.IsDigit) || int.TryParse(PasswordBox.Text,out _) || !PasswordBox.Text.Any(ch => !char.IsLetterOrDigit(ch))|| PasswordBox.Text.Contains(' ')) 
             {
                 InfoLBL.Text = "Password does not meet requirements";
                 return;

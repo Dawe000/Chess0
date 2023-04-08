@@ -82,6 +82,7 @@ namespace Chess0
             this.Controls.Add(this.ReplayButton);
             this.Name = "FinishForm";
             this.Text = "FinishForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FinishForm_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

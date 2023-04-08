@@ -41,6 +41,13 @@ namespace Chess0
             this.P2Pic = new System.Windows.Forms.PictureBox();
             this.P1ProfileButton = new System.Windows.Forms.Button();
             this.P2ProfileButton = new System.Windows.Forms.Button();
+            this.TimeControlToggle = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.IncrementBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.MinutesBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.SecondsBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.P1Pic)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.P2Pic)).BeginInit();
             this.SuspendLayout();
@@ -177,12 +184,91 @@ namespace Chess0
             this.P2ProfileButton.UseVisualStyleBackColor = false;
             this.P2ProfileButton.Click += new System.EventHandler(this.P2ProfileButton_Click);
             // 
+            // TimeControlToggle
+            // 
+            this.TimeControlToggle.AutoSize = true;
+            this.TimeControlToggle.Font = new System.Drawing.Font("SF Movie Poster", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TimeControlToggle.Location = new System.Drawing.Point(24, 576);
+            this.TimeControlToggle.Name = "TimeControlToggle";
+            this.TimeControlToggle.Size = new System.Drawing.Size(153, 29);
+            this.TimeControlToggle.TabIndex = 13;
+            this.TimeControlToggle.Text = "Time Control";
+            this.TimeControlToggle.UseVisualStyleBackColor = true;
+            this.TimeControlToggle.CheckedChanged += new System.EventHandler(this.TimeControlToggle_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("SF Movie Poster", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(326, 576);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 25);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "Minutes:";
+            // 
+            // IncrementBox
+            // 
+            this.IncrementBox.Enabled = false;
+            this.IncrementBox.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.IncrementBox.Location = new System.Drawing.Point(243, 620);
+            this.IncrementBox.Name = "IncrementBox";
+            this.IncrementBox.Size = new System.Drawing.Size(48, 34);
+            this.IncrementBox.TabIndex = 17;
+            this.IncrementBox.Text = "0";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("SF Movie Poster", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(24, 625);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(213, 25);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Increment (seconds):";
+            // 
+            // MinutesBox
+            // 
+            this.MinutesBox.Enabled = false;
+            this.MinutesBox.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.MinutesBox.Location = new System.Drawing.Point(421, 571);
+            this.MinutesBox.Name = "MinutesBox";
+            this.MinutesBox.Size = new System.Drawing.Size(48, 34);
+            this.MinutesBox.TabIndex = 19;
+            this.MinutesBox.Text = "0";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("SF Movie Poster", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(326, 625);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(94, 25);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Seconds:";
+            // 
+            // SecondsBox
+            // 
+            this.SecondsBox.Enabled = false;
+            this.SecondsBox.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.SecondsBox.Location = new System.Drawing.Point(421, 620);
+            this.SecondsBox.Name = "SecondsBox";
+            this.SecondsBox.Size = new System.Drawing.Size(48, 34);
+            this.SecondsBox.TabIndex = 21;
+            this.SecondsBox.Text = "0";
+            // 
             // StartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(553, 588);
+            this.ClientSize = new System.Drawing.Size(553, 682);
+            this.Controls.Add(this.SecondsBox);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.MinutesBox);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.IncrementBox);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.TimeControlToggle);
             this.Controls.Add(this.P2ProfileButton);
             this.Controls.Add(this.P1ProfileButton);
             this.Controls.Add(this.P2Pic);
@@ -218,5 +304,12 @@ namespace Chess0
         private System.Windows.Forms.PictureBox P2Pic;
         private System.Windows.Forms.Button P1ProfileButton;
         private System.Windows.Forms.Button P2ProfileButton;
+        private System.Windows.Forms.CheckBox TimeControlToggle;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox IncrementBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox MinutesBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox SecondsBox;
     }
 }

@@ -28,7 +28,7 @@ namespace Chess0
             }
             else
             {
-                statelabel.Text = "Stalemate!";
+                statelabel.Text = "Draw!";
             }
         }
 
@@ -38,6 +38,7 @@ namespace Chess0
             game.Close();
             main.Enabled = false;
             main.StartButton_Click(default,default);
+            this.Close();
         }
 
         private void MenuButton_Click(object sender, EventArgs e)
@@ -46,6 +47,11 @@ namespace Chess0
             game.Close();
             main.Show();
             this.Close();
+        }
+
+        private void FinishForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            game.Close();
         }
     }
 }

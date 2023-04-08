@@ -27,7 +27,58 @@ namespace Chess0
 
         public void StartButton_Click(object sender, EventArgs e)
         {
-            MainChess m = new MainChess(p1Name, p2Name,this,p1image,p2image);
+            int t = 0;
+            int i = 0;
+            if (TimeControlToggle.Checked == true)
+            {
+                if (!int.TryParse(MinutesBox.Text, out _))
+                {
+                    MessageBox.Show("Invalid minutes value", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (!int.TryParse(SecondsBox.Text, out _))
+                {
+                    MessageBox.Show("Invalid seconds value", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (!int.TryParse(IncrementBox.Text, out _))
+                {
+                    MessageBox.Show("Invalid increment value", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (Convert.ToInt32(SecondsBox.Text)>59 || Convert.ToInt32(SecondsBox.Text) < 0)
+                {
+                    MessageBox.Show("Invalid number of seconds", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (Convert.ToInt32(MinutesBox.Text) * 60 + Convert.ToInt32(SecondsBox.Text) < 5)
+                {
+                    MessageBox.Show("Time too low", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (Convert.ToInt32(MinutesBox.Text) * 60 + Convert.ToInt32(SecondsBox.Text) > 54000)
+                {
+                    MessageBox.Show("Time too high", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (Convert.ToInt32(MinutesBox.Text) < 0)
+                {
+                    MessageBox.Show("Invalid number of minutes", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (Convert.ToInt32(IncrementBox.Text) > 60 || Convert.ToInt32(IncrementBox.Text) < 0)
+                {
+                    MessageBox.Show("Invalid increment", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else
+                {
+                    t = Convert.ToInt32(MinutesBox.Text) * 60 + Convert.ToInt32(SecondsBox.Text);
+                    i = Convert.ToInt32(IncrementBox.Text);
+                }
+            }
+                
+            MainChess m = new MainChess(p1Name, p2Name,this,p1image,p2image,t,i,TimeControlToggle.Checked);
             m.Show();
             this.Hide();
             this.Enabled = false;
@@ -117,5 +168,20 @@ namespace Chess0
             }
         }
 
+        private void TimeControlToggle_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TimeControlToggle.Checked)
+            {
+                IncrementBox.Enabled = true;
+                SecondsBox.Enabled = true;
+                MinutesBox.Enabled = true;
+            }
+            else
+            {
+                IncrementBox.Enabled = false;
+                SecondsBox.Enabled = false;
+                MinutesBox.Enabled = false;
+            }
+        }
     }
 }
