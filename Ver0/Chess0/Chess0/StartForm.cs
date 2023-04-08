@@ -25,7 +25,7 @@ namespace Chess0
 
         }
 
-        public void StartButton_Click(object sender, EventArgs e)
+        public void StartButton_Click(object sender, EventArgs e) //runs necessary validation for the time control before starting the game
         {
             int t = 0;
             int i = 0;
@@ -78,13 +78,13 @@ namespace Chess0
                 }
             }
                 
-            MainChess m = new MainChess(p1Name, p2Name,this,p1image,p2image,t,i,TimeControlToggle.Checked);
+            MainChess m = new MainChess(p1Name, p2Name,this,p1image,p2image,t,i,TimeControlToggle.Checked); //starts a game of chess and hides this form
             m.Show();
             this.Hide();
             this.Enabled = false;
         }
 
-        private void LoginClick(object sender, EventArgs e)
+        private void LoginClick(object sender, EventArgs e) //either opens the login page or, if a user is already logged in, logs them out
         {
             Button s = (Button)sender;
             if (s.Text=="Log out")
@@ -115,7 +115,7 @@ namespace Chess0
             l.Show();
             this.Enabled = false;
         }
-        public void Login(string username, string hash, string player, Image i)
+        public void Login(string username, string hash, string player, Image i) //takes the parameters sent by the login form and applies them to this one
         {
             string p = Convert.ToString(player[1]);
             if (p == "1")
@@ -140,21 +140,21 @@ namespace Chess0
             }
         }
 
-        private void P1ProfileButton_Click(object sender, EventArgs e)
+        private void P1ProfileButton_Click(object sender, EventArgs e) //opens profile form for player one
         {
             ProfileForm p = new ProfileForm(p1Name, p1pass,this,1);
             p.Show();
             this.Enabled = false;
         }
 
-        private void P2ProfileButton_Click(object sender, EventArgs e)
+        private void P2ProfileButton_Click(object sender, EventArgs e) //opens profile form for player two
         {
             ProfileForm p = new ProfileForm(p2Name, p2pass, this,2);
             p.Show();
             this.Enabled = false;
         }
 
-        public void UpdateImage(int p, Image i)
+        public void UpdateImage(int p, Image i) //updates the image for either player
         {
             if (p == 1)
             {
@@ -168,7 +168,7 @@ namespace Chess0
             }
         }
 
-        private void TimeControlToggle_CheckedChanged(object sender, EventArgs e)
+        private void TimeControlToggle_CheckedChanged(object sender, EventArgs e) //allows the time control to be edited only when the checkbox is checked
         {
             if (TimeControlToggle.Checked)
             {
