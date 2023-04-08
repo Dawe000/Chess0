@@ -7,10 +7,10 @@ namespace Chess0
 {
     public class Crypt
     {
-        uint[] P;
-        uint[,] S;
+        uint[] P; //PBox
+        uint[,] S; //SBox
 
-        public Crypt(string pass)
+        public Crypt(string pass) //constructor
         {
             InitBlowFish(MD5HashGen(pass));
         }
@@ -18,15 +18,16 @@ namespace Chess0
 
         void InitBlowFish(string Hash) //initialise variables for blowfish algorithm
         {
-            S = SBox.Get();
+            S = SBox.Get(); //Gets SBox from SBox class
             P = new uint[]{ 0x243f6a88, 0x85a308d3, 0x13198a21,
                 0x03707344, 0xa4093822, 0x299f31d0, 0x082efa98,
                 0xec4e6c89, 0x452821e6, 0x38d01377, 0xbe5466cf,
                 0x34e90c6c, 0xc0ac29b7, 0xc97c50dd, 0x3f84d5b5,
-                0xb5470917, 0x9216d5d9, 0x8979fb1b};
+                0xb5470917, 0x9216d5d9, 0x8979fb1b}; //initial PBox 
 
             uint k;
             int p = 0;
+            //initialising the PBox for this key
             for (int i = 0; i < 18; i++)
             {
                 k = 0x00;
@@ -39,7 +40,7 @@ namespace Chess0
             }
 
         }
-        public string FullEncrypt(string plainText)
+        public string FullEncrypt(string plainText) //runs BEncrypt on every block of the plaintext, converting it to binary in the process
         {
             plainText = plainText.PadRight(plainText.Length + (8 - plainText.Length % 8), '^');
             string plainBin = ASCToBin(plainText);
@@ -56,7 +57,7 @@ namespace Chess0
 
         }//uses all other subroutines required to encrypt
 
-        public string FullDecrypt(string CypherText)
+        public string FullDecrypt(string CypherText) //runs BDecrypt on every block of the cyphertext, converting it from binary to a human readable string in the process
         {
             string plainHex = "";
             string tempHold = "";
@@ -88,7 +89,7 @@ namespace Chess0
             return passBin;
         }
 
-        string BinToAsc(string pass)
+        string BinToAsc(string pass) //convert binary to ascii subroutine
         {
             string passBin = "";
 
@@ -101,15 +102,15 @@ namespace Chess0
             }
 
             return passBin;
-        } //convert binary to ascii subroutine
-        uint f(uint input)
+        } 
+        uint f(uint input) //function needed in blowfish algorithm
         {
             uint temp = S[0, input >> 24] + S[1, (input >> 16) & 0xff];
             uint final = Convert.ToUInt32((temp ^ S[2, input >> 8 & 0xff]) + S[3, input & 0xFF]);
             return final;
-        } //function needed in blowfish algorithm
+        } 
 
-        string BEncrypt(UInt32 L, UInt32 R)
+        string BEncrypt(UInt32 L, UInt32 R) //encrypts a block for blowfish algorithm
         {
             uint temp;
             for (int i = 0; i < 16; i++)
@@ -124,9 +125,9 @@ namespace Chess0
             L = L ^ P[17];
             return (Convert.ToString(L, 16).PadLeft(8, '0') + Convert.ToString(R, 16).PadLeft(8, '0'));
 
-        } //encrypts a block for blowfish algorithm
+        } 
 
-        string BDecrypt(UInt32 L, UInt32 R)
+        string BDecrypt(UInt32 L, UInt32 R) //decrypts a block for blowfish algorithm
         {
             uint temp;
             for (int i = 17; i > 1; i--)
@@ -139,7 +140,7 @@ namespace Chess0
             R = R ^ P[1];
             L = L ^ P[0];
             return (Convert.ToString(L, 16).PadLeft(8, '0') + Convert.ToString(R, 16).PadLeft(8, '0'));
-        } //decrypts a block for blowfish algorithm
+        } 
 
         public string MD5HashGen(string pass) //using MD5 hashing algorithm: https://en.wikipedia.org/wiki/MD5. We do not care about the MD5 vulnerabilities, all we need it for is to convert a variable length string password into a fixed length hash for use the main encryption algorithm.
         {
