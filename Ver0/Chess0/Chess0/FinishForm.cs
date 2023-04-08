@@ -16,7 +16,7 @@ namespace Chess0
         string winner;
         MainChess game;
 
-        public FinishForm(StartForm m,MainChess g, string w)
+        public FinishForm(StartForm m,MainChess g, string w) //constructor, displays the correct outcome based on the input
         {
             InitializeComponent();
             main = m;
@@ -32,7 +32,7 @@ namespace Chess0
             }
         }
 
-        private void ReplayButton_Click(object sender, EventArgs e)
+        private void ReplayButton_Click(object sender, EventArgs e) //replays the game with the same players and time control
         {
             main.Enabled = true;
             game.Close();
@@ -41,7 +41,7 @@ namespace Chess0
             this.Close();
         }
 
-        private void MenuButton_Click(object sender, EventArgs e)
+        private void MenuButton_Click(object sender, EventArgs e) //goes to main menu
         {
             main.Enabled = true;
             game.Close();
@@ -49,7 +49,7 @@ namespace Chess0
             this.Close();
         }
 
-        private void FinishForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void FinishForm_FormClosed(object sender, FormClosedEventArgs e) //closes all necessary forms
         {
             game.Close();
         }
