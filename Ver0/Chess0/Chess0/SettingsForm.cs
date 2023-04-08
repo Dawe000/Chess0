@@ -22,7 +22,7 @@ namespace Chess0
         Dictionary<string, Dictionary<string, Image>> textureSets;
         string textureSet;
         public SettingsForm(MainChess input, Color[] iColors, Color iCheck, Color iBack, Color iText, Color iMove, Dictionary<string, Dictionary<string, Image>> iTextureSets,string iTextureSet)
-        {
+        { //constructor, customises the form based on pre-exiting settings
             InitializeComponent();
             main = input;
             moveColor = iMove;
@@ -57,13 +57,13 @@ namespace Chess0
 
 
 
-        private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e) //updates the colours in the game form when the settings form closes
         {
             main.Enabled = true;
             main.UpdateColors(color1, color2, moveColor, checkColor, backColor, textColor,textureSets,textureSet);
         }
 
-        private void Color1Btn_Click(object sender, EventArgs e)
+        private void Color1Btn_Click(object sender, EventArgs e) //all of the following buttons open a colour dialogue and save that colour
         {
             clr1diag.ShowDialog();
             s1Clr.BackColor=clr1diag.Color;
@@ -106,7 +106,7 @@ namespace Chess0
             textColor = textdiag.Color;
         }
 
-        private void TextureSelect_SelectedIndexChanged(object sender, EventArgs e)
+        private void TextureSelect_SelectedIndexChanged(object sender, EventArgs e) //allows the user to select a texture set from the drop down menu
         {
             textureSet = (string)TextureSelect.SelectedItem;
         }
