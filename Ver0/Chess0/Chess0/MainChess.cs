@@ -33,7 +33,7 @@ namespace Chess0
 
         Dictionary<string, Dictionary<string, Image>> textureSets;
         string textureSet;
-        public MainChess(string p1,string p2, StartForm inpForm,Image p1i, Image p2i,int t, int i, bool tbool)
+        public MainChess(string p1,string p2, StartForm inpForm,Image p1i, Image p2i,int t, int i, bool tbool) //constructor, sets up the game using the parameters sent by the menu page
         {
             InitializeComponent();
             P1Pic.BackgroundImage = p1i;
@@ -69,7 +69,7 @@ namespace Chess0
             BackColor = backColor;
             textColor = Color.Black;
 
-            InitTextures();
+            InitTextures(); //initialises the board textures
             textureSet="Default";
 
             int c = 0;
@@ -77,7 +77,7 @@ namespace Chess0
 
             int offsety = 615;
             squares = new PictureBox[8, 8];
-            for (int y = 0; y<8; y++)
+            for (int y = 0; y<8; y++) //initialises the board grid itself
             {
                 int offsetx = 0;
                 for (int x = 0; x<8; x++)
@@ -107,13 +107,13 @@ namespace Chess0
             //xLabel.Text = Convert.ToString(Cursor.Position.X);
             //yLabel.Text = Convert.ToString(Cursor.Position.Y);
             
-            game = new Chess(new string[] { "p1", "p2" }, 10, 10);
-            game.start(this);
+            game = new Chess(new string[] { "p1", "p2" }, 10, 10); //creates a new instance of Chess which will control the rules of the game
+            game.start(this); //starts game
 
         }
 
         public void UpdateColors(Color newColor1, Color newColor2, Color newMoveColor, Color newCheckColor, Color newBackColor, Color newTextColor, Dictionary<string, Dictionary<string, Image>> iTextureSets, string iTextureSet)
-        {
+        { //this subroutine updates the colours after they are changed in settings
             foreach (PictureBox p in squares)
             {
                 if (p.BackColor == boardColours[0]) p.BackColor = newColor1;
@@ -135,7 +135,7 @@ namespace Chess0
             UpdateBoard();
         }
 
-        public void InitTextures()
+        public void InitTextures() //initialises the libraries in which textures are stored
         {
             Dictionary<string, Image> DefaultPieces=new Dictionary<string, Image> { };
             DefaultPieces.Add("0B", ChessPieces._0B);
@@ -171,7 +171,7 @@ namespace Chess0
 
         
 
-        public void PictureBoxClick(object sender, EventArgs e)
+        public void PictureBoxClick(object sender, EventArgs e) //occurs when a board space is clicked
         {
             PictureBox p = (PictureBox)sender;
             
@@ -179,7 +179,7 @@ namespace Chess0
             int[] pos = new int[] { Convert.ToInt32(Convert.ToString(p.Name[0])) , Convert.ToInt32(Convert.ToString(p.Name[1])) };
             int c = 0;
 
-            if (game.board[pos[0],pos[1]]!="  "&& Convert.ToInt32(Convert.ToString(game.board[pos[0], pos[1]][0])) == game.turn)
+            if (game.board[pos[0],pos[1]]!="  "&& Convert.ToInt32(Convert.ToString(game.board[pos[0], pos[1]][0])) == game.turn) //when a space with a friendly piece is clicked, calculates and displays its moves 
             {
                 moves = game.CalculateLegalMoves(pos);
                 for (int y = 0; y < 8; y++)
@@ -202,7 +202,7 @@ namespace Chess0
                     squares[move[0, 0], move[0, 1]].BackColor = moveColor;
                 }
             }
-            else if (squares[pos[0], pos[1]].BackColor == moveColor)
+            else if (squares[pos[0], pos[1]].BackColor == moveColor) //when a space that the previously selected piece can move to is clicked on, makes that move. resets board colours
             {
                 for (int y = 0; y < 8; y++)
                 {
@@ -219,34 +219,34 @@ namespace Chess0
                     else c = 0;
                 }
                 int[,] correctMove= default;
-                foreach (int[,] move in moves)
+                foreach (int[,] move in moves) //finds the correct move
                 {
                     if (pos[0] == move[0, 0] && pos[1] == move[0, 1]) correctMove = move;
                 }
-                if (timer.Enabled == true)
+                if (timer.Enabled == true) //increments timer if being used
                 {
                     playerTimes[game.turn] += increment;
                     updateTime(game.turn);
                 }
-                if (timer.Enabled == false && timed == true && game.turn == 1)
+                if (timer.Enabled == false && timed == true && game.turn == 1) //starts timer if needed
                 {
                     timer.Enabled = true;
                 }
-                if (game.gameState== "In Play")
+                if (game.gameState== "In Play") //unlocks resign and draw buttons
                 {
                     DrawButton.Enabled = true;
                     ResignButton.Enabled = true;
                 }
-                game.Move(lastPos, correctMove);
-                moves = default;
-                UpdateBoard();
-                if (game.gameState == "checkmate" || game.gameState == "stalemate")
+                game.Move(lastPos, correctMove); //makes the correct move in the game object
+                moves = default; //resets possible moves
+                UpdateBoard(); //updates the board visuals
+                if (game.gameState == "checkmate" || game.gameState == "stalemate") //checks for game end
                 {
                     Gamefinish();
                 }
                 
             }
-            else
+            else //resets board colours
             {
                 for (int y = 0; y < 8; y++)
                 {
@@ -266,7 +266,7 @@ namespace Chess0
             }
             lastPos = pos;
 
-            if (game.check)
+            if (game.check) //highlights the king if they are in check
             {
                 for (int y = 0; y < 8; y++)
                 {
@@ -283,24 +283,24 @@ namespace Chess0
                     }
                 }
             }
-            pointsLabels[0].Text = "Points: " + Convert.ToString(game.points[0]);
+            pointsLabels[0].Text = "Points: " + Convert.ToString(game.points[0]); //updates point totals
             pointsLabels[1].Text = "Points: " + Convert.ToString(game.points[1]);
         }
 
-        private void Gamefinish()
+        private void Gamefinish() //runs when a game finished state is achieved
         {
             timer.Enabled = false;
             string w = p1Name;
-            if (game.turn == 0)
+            if (game.turn == 0)//select winner (if there is one)
             {
                 w = p2Name;
             }
             FinishForm f;
-            if (game.gameState == "checkmate" || game.gameState == "Timeout")
+            if (game.gameState == "checkmate" || game.gameState == "Timeout") //if there was a checkmate, send the winner to the finish form
             {
                 f = new FinishForm(s, this, w);
             }
-            else
+            else //if draw, send nothing to the finish form
             {
                 f = new FinishForm(s, this, "");
             }
@@ -308,12 +308,14 @@ namespace Chess0
             this.Enabled = false;
             
 
+            //the following code will first check if the players are logged in, then change their stats
+
             string p1Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + p1Name + @"\Data.txt";
             string p2Path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\RequiredFiles\" + p2Name + @"\Data.txt";
             Crypt c1 = default;
             Crypt c2 = default;
-            if (p1Name != "Guest1") c1 = new Crypt(s.p1pass);
-            if (p2Name != "Guest2") c2 = new Crypt(s.p2pass);
+            if (p1Name != "Guest1") c1 = new Crypt(s.p1pass); //initialise a crypt instance with player ones password
+            if (p2Name != "Guest2") c2 = new Crypt(s.p2pass); //initialise a crypt instance with player twos password
 
 
             if (game.turn == 1 && (game.gameState == "checkmate"||game.gameState == "Timeout")) //p1 win
@@ -396,7 +398,7 @@ namespace Chess0
 
         }
 
-        public void UpdateBoard()
+        public void UpdateBoard() //updates the visual positions of every piece on the board
         {
             for (int y = 0; y < 8; y++)
             {
@@ -424,7 +426,7 @@ namespace Chess0
 
         private void settingsIcon_Click(object sender, EventArgs e)
         {
-            SettingsForm s = new SettingsForm(this,boardColours,checkColor,backColor,textColor,moveColor,textureSets,textureSet);
+            SettingsForm s = new SettingsForm(this,boardColours,checkColor,backColor,textColor,moveColor,textureSets,textureSet); //send current settings to the settings form
             s.Show();
             this.Enabled = false;
         }
@@ -436,6 +438,7 @@ namespace Chess0
 
         private void MainChess_FormClosed(object sender, FormClosedEventArgs e)
         {
+            //gives both players a draw if the game is closed during play
             if (s.Enabled == false)
             {
                 
@@ -476,7 +479,7 @@ namespace Chess0
         }
 
         void updateTime(int t)
-        {
+        { //correctly updates the timer for each player during their turn
             string toReplace = "";
             if (playerTimes[t] >= 60 * 60)
             {
@@ -519,24 +522,24 @@ namespace Chess0
 
 
 
-        private void timer_Tick(object sender, EventArgs e)
+        private void timer_Tick(object sender, EventArgs e) //occurs every 10ms
         {
             int t = game.turn;
             playerTimes[t] -= 0.01;
-            if (playerTimes[t] <= 0)
+            if (playerTimes[t] <= 0) //check if a player has timed out
             {
                 timer.Enabled = false;
                 game.gameState = "Timeout";
                 Gamefinish();
                 timeLabels[t].Text = "0";
             }
-            else
+            else //adjust their countdown timer
             {
                 updateTime(t);
             }
         }
 
-        private void DrawButton_Click(object sender, EventArgs e)
+        private void DrawButton_Click(object sender, EventArgs e) 
         {
             game.gameState = "stalemate";
             Gamefinish();
