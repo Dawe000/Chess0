@@ -283,6 +283,8 @@ namespace Chess0
                     }
                 }
             }
+            pointsLabels[0].Text = "Points: " + Convert.ToString(game.points[0]);
+            pointsLabels[1].Text = "Points: " + Convert.ToString(game.points[1]);
         }
 
         private void Gamefinish()

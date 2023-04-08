@@ -9,7 +9,7 @@ namespace Chess0
     {
         public string[,] board;
         string[] players;
-        int[] points;
+        public int[] points;
         int[] time;
         int increment;
         public int turn;
@@ -58,7 +58,38 @@ namespace Chess0
 
 
             //int opt = Convert.ToInt32(Console.ReadLine());
+            try
+            {
+                int y = move[1, 0];
+                int x = move[1, 1];
+                char pieceTaken = board[y, x][1];
+                switch (pieceTaken)
+                {
+                    case 'P':
+                        points[turn] += 1;
+                        break;
+                    case 'N':
+                        points[turn] += 3;
+                        break;
+                    case 'B':
+                        points[turn] += 3;
+                        break;
+                    case 'R':
+                        points[turn] += 5;
+                        break;
+                    case 'Q':
+                        points[turn] += 9;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+
+            }
             UpdateBoard(pos, move);
+
             if (turn == 1) turn = 0;
             else turn = 1;
 

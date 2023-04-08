@@ -157,9 +157,9 @@ namespace Chess0
             this.PointsLabel2.Font = new System.Drawing.Font("SF Movie Poster", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.PointsLabel2.Location = new System.Drawing.Point(1106, 116);
             this.PointsLabel2.Name = "PointsLabel2";
-            this.PointsLabel2.Size = new System.Drawing.Size(91, 29);
+            this.PointsLabel2.Size = new System.Drawing.Size(107, 28);
             this.PointsLabel2.TabIndex = 19;
-            this.PointsLabel2.Text = "Points:";
+            this.PointsLabel2.Text = "Points: 0";
             // 
             // PointsLabel1
             // 
@@ -167,9 +167,9 @@ namespace Chess0
             this.PointsLabel1.Font = new System.Drawing.Font("SF Movie Poster", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.PointsLabel1.Location = new System.Drawing.Point(1106, 443);
             this.PointsLabel1.Name = "PointsLabel1";
-            this.PointsLabel1.Size = new System.Drawing.Size(91, 29);
+            this.PointsLabel1.Size = new System.Drawing.Size(107, 28);
             this.PointsLabel1.TabIndex = 20;
-            this.PointsLabel1.Text = "Points:";
+            this.PointsLabel1.Text = "Points: 0";
             // 
             // MainChess
             // 
