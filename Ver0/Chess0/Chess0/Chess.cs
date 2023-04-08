@@ -7,7 +7,7 @@ namespace Chess0
 {
     public class Chess
     {
-        public string[,] board;
+        public string[,] board; //initialising required variables
         string[] players;
         public int[] points;
         int[] time;
@@ -40,7 +40,7 @@ namespace Chess0
             gameState = "notbegun";
         }
         
-        public void start(MainChess sender) 
+        public void start(MainChess sender) //starting a new game
         {
             game = sender;
             game.UpdateBoard();
@@ -54,11 +54,11 @@ namespace Chess0
             //pos[0] = Convert.ToInt32(Console.ReadLine());
             //Console.Write("Input x coord: ");
             //pos[1] = Convert.ToInt32(Console.ReadLine());
-
-
-
             //int opt = Convert.ToInt32(Console.ReadLine());
-            try
+
+
+
+            try //adding points
             {
                 int y = move[1, 0];
                 int x = move[1, 1];
@@ -93,7 +93,7 @@ namespace Chess0
             if (turn == 1) turn = 0;
             else turn = 1;
 
-            int[] kingPos = new int[] { 0, 0 };
+            int[] kingPos = new int[] { 0, 0 }; //find king position
             for (int x = 0; x < 8; x++)
             {
                 for (int y = 0; y < 8; y++)
@@ -113,13 +113,13 @@ namespace Chess0
                 toCheck = '1';
             }
             check = false;
-            if (CheckIfAttacked(kingPos, toCheck))
+            if (CheckIfAttacked(kingPos, toCheck)) //use king position to see if king is under attack
             {
                 check = true;
             }
 
             List<int[,]> nextLegalMoves = new List<int[,]> { };
-            for(int y = 0; y<8; y++)
+            for(int y = 0; y<8; y++) //find all moves that opponent can makes. If it is 0 and the king is attacked, it is checkmate. If it is 0 and the king is not attacked, it is stalemate.
             {
                 for (int x = 0; x < 8; x++)
                 {
@@ -145,20 +145,20 @@ namespace Chess0
             
         }
 
-        public int[][,] CalculateLegalMoves(int[] pos)
+        public int[][,] CalculateLegalMoves(int[] pos) //a function where, if you input a position, it will return all the legal moves that the piece at this position can make
         {
             int attacker = Convert.ToInt32(Convert.ToString(board[pos[0], pos[1]][0]));
-            int[][,] moves = CheckPossibleMoves(pos);
+            int[][,] moves = CheckPossibleMoves(pos); //find possible moves (not necessarily legal)
             List<int[,]> legalMoves = new List<int[,]> { };
             string[,] currentBoard = (string[,])board.Clone();
             int[] currentEnPassant = (int[])enPassant.Clone();
             bool[,] currentCastle = (bool[,])castle.Clone();
             bool currentCheck = check;
-            foreach (int[,] m in moves)
+            foreach (int[,] m in moves) //for each move calculated, simulate the move being made and check if it gets your own king in check
             {
-                UpdateBoard(pos, m);
+                UpdateBoard(pos, m); 
                 int[] kingPos = new int[] { 0, 0 };
-                for (int x = 0; x<8; x++)
+                for (int x = 0; x<8; x++) //find king
                 {
                     for (int y = 0; y < 8; y++)
                     {
@@ -195,43 +195,43 @@ namespace Chess0
             board[pos[0], pos[1]] = "  ";
             enPassant[0] = 8;
             enPassant[1] = 8;
-            if (move[1,0] == 9)
+            if (move[1,0] == 9) //code 9 refers to castling
             {
-                if (attacker == 0)
+                if (attacker == 0) //white
                 {
-                    castle[0, 0] = false; castle[0, 1] = false;
-                    if (move[0, 1] == 2)
+                    castle[0, 0] = false; castle[0, 1] = false; //makes sure that castle move cannot be used again
+                    if (move[0, 1] == 2) //kingside
                     {
                         board[0, 0] = "  ";
                         board[0, 2] = "0K";
                         board[0, 3] = "0R";
                     }
-                    else
+                    else //queenside
                     {
                         board[0, 5] = "0R";
                         board[0, 6] = "0K";
                         board[0, 7] = "  ";
                     }
                 }
-                else
+                else //black
                 { 
-                    castle[1, 0] = false; castle[1, 1] = false;
-                
-                    if (move[0, 1] == 2)
+                    castle[1, 0] = false; castle[1, 1] = false; //makes sure that castle move cannot be used again
+
+                    if (move[0, 1] == 2) //kingside
                     {
                         board[7, 0] = "  ";
                         board[7, 2] = "1K";
                         board[7, 3] = "1R";
                     }
-                    else
+                    else //queenside
                     {
                         board[7, 5] = "1R";
                         board[7, 6] = "1K";
                         board[7, 7] = "  ";
                     }
                 }
-            }//castling
-            else if (move[1, 0] == 10)
+            }
+            else if (move[1, 0] == 10) //10 refers to pawn moving forward by 2
             {
                 board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
                 enPassant[0] = move[0, 0];
@@ -241,17 +241,17 @@ namespace Chess0
             {
                 board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
             }
-            else
+            else //regular move
             {
                 board[move[1, 0], move[1, 1]] = "  ";
                 board[move[0, 0], move[0, 1]] = Convert.ToString(attacker) + type;
             }
             if (type == 'K')
             {
-                castle[attacker, 0] = false;
+                castle[attacker, 0] = false; //removes opportunity to castle after king moves
                 castle[attacker, 1] = false;
             }
-            if (board[0,0][1] != 'R') castle[0, 0] = false;
+            if (board[0,0][1] != 'R') castle[0, 0] = false; //removes opportunity to castle certain directions after rook moves
             if (board[0,7][1] != 'R') castle[0, 1] = false;
             if (board[7, 0][1] != 'R') castle[1, 0] = false;
             if (board[7, 7][1] != 'R') castle[1, 1] = false;
@@ -380,7 +380,7 @@ namespace Chess0
                 case 'R': //rook movement
                         possibleMoves.AddRange(checkRookMoves(pos, attacker));
                     break;
-                case 'Q': //queen movement
+                case 'Q': //queen movement (just rook and bishop movement in one)
                         possibleMoves.AddRange(checkBishopMoves(pos, attacker));
                         possibleMoves.AddRange(checkRookMoves(pos, attacker));
                     break;
@@ -392,7 +392,7 @@ namespace Chess0
             return possibleMoves.ToArray();
         }
               
-        public bool CheckIfAttacked(int[] pos,char attacker)
+        public bool CheckIfAttacked(int[] pos,char attacker) //calculates all possible moves for every opponent piece and checks if a certain position is under attack
         {
             check = true;
             for (int y = 0; y<8; y++)
@@ -416,7 +416,7 @@ namespace Chess0
             return false;
         }
 
-        public int[][,] checkRookMoves(int[] pos, int attacker)
+        public int[][,] checkRookMoves(int[] pos, int attacker) //returns all possible rook moves for a certain position
 
         {
             List<int[,]> possibleMoves = new List<int[,]> { };
@@ -498,7 +498,8 @@ namespace Chess0
             }
             return possibleMoves.ToArray();
         }
-        public int[][,] checkBishopMoves(int[] pos,int attacker){
+        public int[][,] checkBishopMoves(int[] pos,int attacker)//returns all possible bishop moves for this position
+        {
             List<int[,]> possibleMoves = new List<int[,]>{};
             for (int i = 1; i < 8; i++) //down left
             {
