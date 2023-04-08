@@ -22,7 +22,7 @@ namespace Chess0
         Image profileImage;
         string path;
         int player;
-        public ProfileForm(string u, string p, StartForm m, int n)
+        public ProfileForm(string u, string p, StartForm m, int n) //constructor, finds the players directory, decrypts and displays their information
         {
             InitializeComponent();
             userName = u;
@@ -49,13 +49,13 @@ namespace Chess0
             LossLabel.Text = "Games Lost: " + plainArray[3];
         }
 
-        private void ChangeButton_Click(object sender, EventArgs e)
+        private void ChangeButton_Click(object sender, EventArgs e) //changes the profile picture of the player
         {
             var fileContent = string.Empty;
             var filePath = string.Empty;
             bool test = false;
             Image img = default;
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()) //use a windows open file dialogue, filtering for only PNG files
             {
                 openFileDialog.InitialDirectory = "c:\\";
                 openFileDialog.Filter = "PNG files (*.png)|*.png";
@@ -76,7 +76,7 @@ namespace Chess0
                 }
 
             }
-            if (test)
+            if (test) //runs if the file is selected, checks if its size is valid
             {
                 if (img.Width < 180 || img.Height < 180)
                 {
@@ -91,7 +91,7 @@ namespace Chess0
                     profileImage = img;
                     ProfileImage.BackgroundImage = profileImage;
                     File.Delete(path + @"\ProfilePicture.png");
-                    profileImage.Save(path + @"\ProfilePicture.png");
+                    profileImage.Save(path + @"\ProfilePicture.png"); //replaces the profile picture saved in files
                 }
             }
 
@@ -100,7 +100,7 @@ namespace Chess0
         private void ProfileForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             main.Enabled = true;
-            main.UpdateImage(player, profileImage);
+            main.UpdateImage(player, profileImage); //updates the profile picture in the main form
         }
     }
 }
