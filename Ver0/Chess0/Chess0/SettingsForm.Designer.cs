@@ -58,68 +58,74 @@ namespace Chess0
             // 
             // Color1Btn
             // 
+            this.Color1Btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.Color1Btn.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Color1Btn.Location = new System.Drawing.Point(12, 12);
             this.Color1Btn.Name = "Color1Btn";
             this.Color1Btn.Size = new System.Drawing.Size(204, 58);
             this.Color1Btn.TabIndex = 0;
             this.Color1Btn.Text = "Square Colour 1";
-            this.Color1Btn.UseVisualStyleBackColor = true;
+            this.Color1Btn.UseVisualStyleBackColor = false;
             this.Color1Btn.Click += new System.EventHandler(this.Color1Btn_Click);
             // 
             // Color2Btn
             // 
+            this.Color2Btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.Color2Btn.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Color2Btn.Location = new System.Drawing.Point(12, 76);
             this.Color2Btn.Name = "Color2Btn";
             this.Color2Btn.Size = new System.Drawing.Size(204, 58);
             this.Color2Btn.TabIndex = 1;
             this.Color2Btn.Text = "Square Colour 2";
-            this.Color2Btn.UseVisualStyleBackColor = true;
+            this.Color2Btn.UseVisualStyleBackColor = false;
             this.Color2Btn.Click += new System.EventHandler(this.Color2Btn_Click);
             // 
             // CheckColorBtn
             // 
+            this.CheckColorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.CheckColorBtn.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.CheckColorBtn.Location = new System.Drawing.Point(12, 140);
             this.CheckColorBtn.Name = "CheckColorBtn";
             this.CheckColorBtn.Size = new System.Drawing.Size(204, 58);
             this.CheckColorBtn.TabIndex = 2;
             this.CheckColorBtn.Text = "King Check Colour";
-            this.CheckColorBtn.UseVisualStyleBackColor = true;
+            this.CheckColorBtn.UseVisualStyleBackColor = false;
             this.CheckColorBtn.Click += new System.EventHandler(this.CheckColorBtn_Click);
             // 
             // MoveColorBtn
             // 
+            this.MoveColorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.MoveColorBtn.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MoveColorBtn.Location = new System.Drawing.Point(12, 204);
             this.MoveColorBtn.Name = "MoveColorBtn";
             this.MoveColorBtn.Size = new System.Drawing.Size(204, 58);
             this.MoveColorBtn.TabIndex = 3;
             this.MoveColorBtn.Text = "Possible Move Colour";
-            this.MoveColorBtn.UseVisualStyleBackColor = true;
+            this.MoveColorBtn.UseVisualStyleBackColor = false;
             this.MoveColorBtn.Click += new System.EventHandler(this.MoveColorBtn_Click);
             // 
             // BackColorBtn
             // 
+            this.BackColorBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.BackColorBtn.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.BackColorBtn.Location = new System.Drawing.Point(12, 268);
             this.BackColorBtn.Name = "BackColorBtn";
             this.BackColorBtn.Size = new System.Drawing.Size(204, 58);
             this.BackColorBtn.TabIndex = 4;
             this.BackColorBtn.Text = "Background Colour";
-            this.BackColorBtn.UseVisualStyleBackColor = true;
+            this.BackColorBtn.UseVisualStyleBackColor = false;
             this.BackColorBtn.Click += new System.EventHandler(this.BackColorBtn_Click);
             // 
             // TextClrBtn
             // 
+            this.TextClrBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.TextClrBtn.Font = new System.Drawing.Font("SF Movie Poster", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.TextClrBtn.Location = new System.Drawing.Point(12, 332);
             this.TextClrBtn.Name = "TextClrBtn";
             this.TextClrBtn.Size = new System.Drawing.Size(204, 58);
             this.TextClrBtn.TabIndex = 5;
             this.TextClrBtn.Text = "Text Colour";
-            this.TextClrBtn.UseVisualStyleBackColor = true;
+            this.TextClrBtn.UseVisualStyleBackColor = false;
             this.TextClrBtn.Click += new System.EventHandler(this.TextClrBtn_Click);
             // 
             // s1Clr
@@ -185,6 +191,7 @@ namespace Chess0
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(360, 453);
             this.Controls.Add(this.TextureSelect);
             this.Controls.Add(this.backClr);
