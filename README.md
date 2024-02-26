@@ -1,2 +1,2 @@
 # Chess0
-Just my coursework
+Allows you to change colours, login and save stats (all data is encrypted)
